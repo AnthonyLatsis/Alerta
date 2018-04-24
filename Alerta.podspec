@@ -10,10 +10,11 @@
 Pod::Spec.new do |spec|
 
 	spec.name         			= "Alerta"
-	spec.version 		 		    = "4.0.0"
+	spec.version 		 		    = "4.0.2"
 	spec.license      			= { :type => "MIT", :file => "LICENSE" }
 
   spec.platform     			= :ios, "10.0"
+  spec.swift_version      = "4.0"
  	spec.framework  			  = "UIKit" 
 	spec.source_files  			= "Alerta/**/*.{swift}"
 
