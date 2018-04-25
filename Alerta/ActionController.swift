@@ -8,13 +8,13 @@
 
 import UIKit
 
-enum ActionControllerStyle {
+public enum ActionControllerStyle {
     
     case actionSheet
     
     case alert
     
-    var actionHeight: CGFloat {
+    internal var actionHeight: CGFloat {
         
         switch self {
         case .alert: return 45
@@ -23,7 +23,7 @@ enum ActionControllerStyle {
     }
 }
 
-enum ActionStyle {
+public enum ActionStyle {
     
     case `default`
     
@@ -32,17 +32,33 @@ enum ActionStyle {
     case destructive
 }
 
-
 public protocol ActionItem {
     
     var title: String { get }
 }
 
-struct Action: ActionItem {
+public protocol Action: ActionItem {
+
+    var title: String { get }
     
-    let title: String
+    var style: ActionStyle { get }
+}
+
+public final class AlertaAction: Action {
     
-    let style: ActionStyle
+    public init(title: String, style: ActionStyle, handler: (() -> ())? = nil) {
+        
+        self.title = title
+        self.style = style
+        
+        self.handler = handler
+    }
+    
+    public let title: String
+    
+    public let style: ActionStyle
+    
+    fileprivate let handler: (() -> ())?
 }
 
 protocol ActionControllerDelegate: class {
@@ -50,11 +66,13 @@ protocol ActionControllerDelegate: class {
     func action(index: Int)
 }
 
-class ActionController: UIViewController {
+public final class ActionController: UIViewController {
     
     fileprivate let mainView = ActionView()
     
     weak var delegate: ActionControllerDelegate?
+    
+    fileprivate let transition: UIViewControllerAnimatedTransitioning & ActionTransitionAnimator
     
     
     fileprivate let collection = ActionCollection()
@@ -84,15 +102,21 @@ class ActionController: UIViewController {
         self.layout = layout
         self.style = style
         
+        self.transition = (style == .alert) ? AlertTransitionAnimator() :
+                                              ActionSheetTransitionAnimator()
+        
         super.init(nibName: nil, bundle: nil)
+        
+        self.modalPresentationStyle = .overFullScreen
+        self.transitioningDelegate = self
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension ActionController {
+public extension ActionController {
     
     override func loadView() {
         
@@ -127,27 +151,42 @@ extension ActionController {
             self.collection.isScrollEnabled = false
         }
         self.collection.scrollIndicatorInsets = UIEdgeInsets.init(bottom: layout.bodyCornerRadius)
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        if let cancel = cancelAction, style == .alert {
-            
-            actions.append(cancel)
-        }
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(tappedOutside))
+        self.view.superview?.addGestureRecognizer(tap)
     }
 }
 
-extension ActionController {
+public extension ActionController {
     
-    func add(action: Action) {
+    public func add(action: Action) {
         
         if action.style == .cancel {
             
-            if cancelAction != nil {
-                fatalError("You can't have more than one cancel action")
+            switch style {
+            case .actionSheet:
+                if let _ = cancelAction {
+                    fatalError("You can't have more than one cancel action")
+                }
+                cancelAction = action
+            case .alert:
+                if actions.contains(where: {$0.style == .cancel}) {
+                    fatalError("You can't have more than one cancel action")
+                }
+                self.actions.append(action)
             }
-            self.cancelAction = action
         } else {
             self.actions.append(action)
         }
+    }
+    
+    public func add(actions: Action...) {
+        
+        for action in actions { self.add(action: action) }
     }
     
     func header(view: UIView) {
@@ -158,12 +197,12 @@ extension ActionController {
 
 extension ActionController: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return actions.count * 2 - 1
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if indexPath.row % 2 == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActionCollection.ReuseID.cell.rawValue, for: indexPath) as! ActionCollectionViewCell
@@ -192,7 +231,7 @@ extension ActionController: UICollectionViewDataSource {
 
 extension ActionController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         delegate?.action(index: indexPath.row)
     }
@@ -200,8 +239,7 @@ extension ActionController: UICollectionViewDelegate {
 
 extension ActionController: UICollectionViewDelegateFlowLayout {
     
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
         let height = self.style.actionHeight
             
@@ -235,5 +273,28 @@ extension ActionController: ActionViewDelegate {
     func cancel() {
         
         self.delegate?.action(index: -1)
+    }
+}
+
+extension ActionController {
+    
+    @objc fileprivate func tappedOutside() {
+        
+        if style == .actionSheet { self.dismiss(animated: true) }
+    }
+}
+
+extension ActionController: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        transition.mode = .present
+        return transition
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        transition.mode = .dismiss
+        return transition
     }
 }

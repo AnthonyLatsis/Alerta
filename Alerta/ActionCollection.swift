@@ -79,21 +79,6 @@ extension ActionCollection {
     }
 }
 
-extension ActionCollection {
-    
-    override func layoutSubviews() {
-        
-        topView.frame = CGRect(x: 0, y: -UIScreen.main.bounds.height, width: self.bounds.width, height: UIScreen.main.bounds.height)
-        
-        bottomView.frame = CGRect(x: 0, y: self.contentSize.height, width: self.bounds.width, height: UIScreen.main.bounds.height)
-        
-        topView.backgroundColor = UIColor.white.withAlphaComponent(0.5)//layout.alpha(for: .normal))
-        bottomView.backgroundColor = UIColor.white.withAlphaComponent(0.5)//layout.alpha(for: .normal))
-        
-        super.layoutSubviews()
-    }
-}
-
 //extension ActionCollectionView {
 //    
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

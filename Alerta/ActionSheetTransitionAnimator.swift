@@ -36,7 +36,7 @@ class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
             transitionContext!.view(forKey: .to)! :
             transitionContext!.view(forKey: .from)!
         
-        let height = (alert as! AVAlertView).alertContainerHeight(for: transitionContext!)
+        let height = alert.bounds.height
         
         if mode == .present {
             if height < UIScreen.main.bounds.height * 0.25 {
@@ -66,15 +66,18 @@ class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
             
             dimmingView.backgroundColor = .clear
         
-            containerView.insert(subviews: [dimmingView], at: 10)
-        
+            containerView.insert(subviews: [dimmingView, to])
+            
             dimmingView.anchor(to: containerView)
             
-            containerView.insert(subviews: [to], at: 10)
-            
-            to.anchor(to: containerView)
+            if UIDevice.current.orientation.isLandscape {
+                to.bottomAnchor.equals(containerView.bottomAnchor, constant: -bezel)
+                to.widthAnchor.equals(UIScreen.main.bounds.height * 0.5 - bezel * 2)
+                to.centerXAnchor.equals(containerView.centerXAnchor)
+            } else {
+                to.anchor(to: containerView, insets: (nil, bezel, bezel, bezel))
+            }
         }
-        
         let animation = CABasicAnimation.init(keyPath: "position.y")
         
         animation.delegate = self
@@ -95,7 +98,7 @@ class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
         } else {
             animation.fromValue = UIScreen.main.bounds.height * 0.5
     
-            let height = (alert as! AVAlertView).alertContainerHeight(for: transitionContext)
+            let height = alert.bounds.height
             
             if height > UIScreen.main.bounds.height * 0.25 {
                 animation.toValue = UIScreen.main.bounds.height * 1.5

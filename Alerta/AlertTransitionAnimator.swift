@@ -34,13 +34,19 @@ class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning, 
         if mode == .present {
             dimmingView.backgroundColor = .clear
             
-            containerView.insert(subviews: [dimmingView], at: 10)
+            containerView.insert(subviews: [dimmingView, alert])
             
             dimmingView.anchor(to: containerView)
             
-            containerView.insert(subviews: [alert], at: 10)
-            
-            alert.anchor(to: containerView)
+            if UIDevice.current.orientation.isPortrait {
+                
+                alert.leftAnchor.equals(containerView.leftAnchor)
+                alert.rightAnchor.equals(containerView.rightAnchor)
+            } else {
+                alert.widthAnchor.equals(UIScreen.main.bounds.width * 0.6)
+                alert.centerXAnchor.equals(containerView.centerXAnchor)
+            }
+            alert.centerYAnchor.equals(containerView.centerYAnchor)
         }
         let duration = transitionDuration(using: transitionContext)
         

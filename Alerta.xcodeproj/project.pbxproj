@@ -18,9 +18,9 @@
 		59278C0320801F0D006212BC /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFA20801F0C006212BC /* ActionView.swift */; };
 		59278C0420801F0D006212BC /* ActionCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFB20801F0C006212BC /* ActionCollection.swift */; };
 		59278C0520801F0D006212BC /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFC20801F0C006212BC /* ActionCell.swift */; };
-		59278C0620801F0D006212BC /* AVActionSheetTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFD20801F0C006212BC /* AVActionSheetTransitionAnimator.swift */; };
+		59278C0620801F0D006212BC /* ActionSheetTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFD20801F0C006212BC /* ActionSheetTransitionAnimator.swift */; };
 		59278C0720801F0D006212BC /* AVAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFE20801F0C006212BC /* AVAlertView.swift */; };
-		59278C0820801F0D006212BC /* AVAlertTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFF20801F0D006212BC /* AVAlertTransitionAnimator.swift */; };
+		59278C0820801F0D006212BC /* AlertTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFF20801F0D006212BC /* AlertTransitionAnimator.swift */; };
 		5951557E20805A910054892E /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951557D20805A910054892E /* UIView.swift */; };
 		5951558020805AEC0054892E /* CAMediaTimingFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951557F20805AEC0054892E /* CAMediaTimingFunction.swift */; };
 		5951558A20805ED00054892E /* NSLayoutAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5951558520805ED00054892E /* NSLayoutAnchor.swift */; };
@@ -43,9 +43,9 @@
 		59278BFA20801F0C006212BC /* ActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		59278BFB20801F0C006212BC /* ActionCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCollection.swift; sourceTree = "<group>"; };
 		59278BFC20801F0C006212BC /* ActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
-		59278BFD20801F0C006212BC /* AVActionSheetTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVActionSheetTransitionAnimator.swift; sourceTree = "<group>"; };
+		59278BFD20801F0C006212BC /* ActionSheetTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheetTransitionAnimator.swift; sourceTree = "<group>"; };
 		59278BFE20801F0C006212BC /* AVAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVAlertView.swift; sourceTree = "<group>"; };
-		59278BFF20801F0D006212BC /* AVAlertTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVAlertTransitionAnimator.swift; sourceTree = "<group>"; };
+		59278BFF20801F0D006212BC /* AlertTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertTransitionAnimator.swift; sourceTree = "<group>"; };
 		5951557D20805A910054892E /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		5951557F20805AEC0054892E /* CAMediaTimingFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAMediaTimingFunction.swift; sourceTree = "<group>"; };
 		5951558520805ED00054892E /* NSLayoutAnchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutAnchor.swift; sourceTree = "<group>"; };
@@ -86,8 +86,8 @@
 			children = (
 				59278BF820801F0C006212BC /* AVAlertController.swift */,
 				59278BFE20801F0C006212BC /* AVAlertView.swift */,
-				59278BFF20801F0D006212BC /* AVAlertTransitionAnimator.swift */,
-				59278BFD20801F0C006212BC /* AVActionSheetTransitionAnimator.swift */,
+				59278BFF20801F0D006212BC /* AlertTransitionAnimator.swift */,
+				59278BFD20801F0C006212BC /* ActionSheetTransitionAnimator.swift */,
 				59278BF720801F0C006212BC /* ActionController.swift */,
 				59278BFA20801F0C006212BC /* ActionView.swift */,
 				59278BF920801F0C006212BC /* ActionHeader.swift */,
@@ -235,11 +235,11 @@
 				5951558B20805ED00054892E /* NSLayoutConstraint.swift in Sources */,
 				5925B4FA20824EEF008A4904 /* UIColor.swift in Sources */,
 				59278C0020801F0D006212BC /* ActionController.swift in Sources */,
-				59278C0620801F0D006212BC /* AVActionSheetTransitionAnimator.swift in Sources */,
+				59278C0620801F0D006212BC /* ActionSheetTransitionAnimator.swift in Sources */,
 				59278C0120801F0D006212BC /* AVAlertController.swift in Sources */,
 				59278C0220801F0D006212BC /* ActionHeader.swift in Sources */,
 				5951558D20805ED00054892E /* NSLayoutDimension.swift in Sources */,
-				59278C0820801F0D006212BC /* AVAlertTransitionAnimator.swift in Sources */,
+				59278C0820801F0D006212BC /* AlertTransitionAnimator.swift in Sources */,
 				59278C0520801F0D006212BC /* ActionCell.swift in Sources */,
 				5951558020805AEC0054892E /* CAMediaTimingFunction.swift in Sources */,
 				590AF45A20866D5300C2D2E4 /* AlertaLayout.swift in Sources */,
