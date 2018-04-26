@@ -97,25 +97,15 @@ extension UIView {
         }
     }
     
-    class func animate(duration: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> (), completion: @escaping ((Bool) -> ())) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: animationOption(for: curve), animations: animations, completion: completion)
-    }
+  class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> (), completion: @escaping ((Bool) -> ())) {
     
-    class func animate(duration: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> ()) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: animationOption(for: curve), animations: animations, completion: nil)
-    }
+    UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: completion)
+  }
+  
+  class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> ()) {
     
-    class func animate(duration: TimeInterval, delay: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> (), completion: ((Bool) -> ())? = nil) {
-        
-        UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: completion)
-    }
-    
-    class func animate(duration: TimeInterval, delay: TimeInterval, curve: UIViewAnimationCurve, animations: @escaping () -> ()) {
-        
-        UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: nil)
-    }
+    UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: nil)
+  }
 }
 
 

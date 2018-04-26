@@ -24,7 +24,7 @@ struct ActionHeaderConfiguration {
 class ActionHeader: UIView {
 
     fileprivate let topIndent: CGFloat = 14.5
-    fileprivate let interIndent: CGFloat = 14
+    fileprivate let interIndent: CGFloat = 12
     fileprivate let indentX: CGFloat = 15
     
     fileprivate let titleLabel = UILabel()

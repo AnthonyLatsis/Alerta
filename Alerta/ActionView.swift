@@ -26,7 +26,7 @@ protocol ActionViewDelegate: class {
     func cancel()
 }
 
-class ActionView: UIView {
+final class ActionView: UIView {
     
 
     weak var delegate: ActionViewDelegate?

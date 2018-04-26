@@ -8,13 +8,11 @@
 
 import UIKit
 
-class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning, ActionTransitionAnimator {
+final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning, ActionTransitionAnimator {
     
     fileprivate let dimmingView = UIView()
     
     fileprivate let dimDuration = 0.3
-    
-    fileprivate var completion: () -> () = {}
     
     var mode: AnimationControllerMode = .present
     
@@ -50,61 +48,37 @@ class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning, 
         }
         let duration = transitionDuration(using: transitionContext)
         
-        if mode == .present {
+        UIView.animate(withDuration: dimDuration) {
             
-            let scaleAnimation = CABasicAnimation.init(keyPath: "transform")
-            
-            scaleAnimation.duration = duration
-
-            scaleAnimation.fromValue = NSValue.init(caTransform3D: CATransform3DMakeScale(1.5, 1.5, 1.0))
-            scaleAnimation.toValue = NSValue.init(caTransform3D: CATransform3DMakeScale(1.0, 1.0, 1.0))
-            scaleAnimation.timingFunction = CAMediaTimingFunction.init(controlPoints: 0, 0.9, 0.1, 1.0)
-        
-            let group = CAAnimationGroup()
-            
-            group.animations = [scaleAnimation]
-            
-            group.delegate = self
-            group.duration = duration
-
-            alert.layer.add(group, forKey: nil)
-            
-            UIView.animate(withDuration: dimDuration) {
+            if self.mode == .present {
                 self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            }
-        } else {
-            let animation = CABasicAnimation.init(keyPath: "opacity")
-            
-            alert.layer.opacity = 0.0
-            
-            animation.delegate = self
-            animation.fromValue = 1.0
-            animation.toValue = 0.0
-            animation.duration = duration
-            animation.timingFunction = CAMediaTimingFunction.easeOut
-            
-            alert.layer.add(animation, forKey: nil)
-            
-            UIView.animate(withDuration: dimDuration) {
+            } else {
                 self.dimmingView.backgroundColor = .clear
             }
         }
-        completion = {
+        if mode == .present {
+            
+            alert.transform = CGAffineTransform.init(scaleX: 1.5, y: 1.5)
+            
+            let animator = UIViewPropertyAnimator.init(duration: duration, controlPoint1: CGPoint.init(x: 0, y: 0.9), controlPoint2: CGPoint.init(x: 0.1, y: 1.0)) {
+                
+                alert.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
+            }
+            animator.startAnimation()
+            return
+        }
+        let animator = UIViewPropertyAnimator.init(duration: duration, curve: .easeOut) {
+            
+            alert.alpha = 0.0
+        }
+        animator.addCompletion { _ in
             if self.mode == .dismiss {
                 self.dimmingView.removeFromSuperview()
             }
             transitionContext.completeTransition(true)
         }
+        animator.startAnimation()
     }
 }
-
-extension AlertTransitionAnimator: CAAnimationDelegate {
-    
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        
-        completion()
-    }
-}
-
 
 
