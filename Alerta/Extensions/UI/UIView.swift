@@ -9,27 +9,27 @@
 import UIKit
 
 protocol View {
-    
+
     func setTargets()
-    
+
     func setUI()
-    
+
     func setConstraints()
 }
 
 extension View {
-    
+
     func setTargets() {}
-    
+
     func setUI() {}
-    
+
     func setConstraints() {}
 }
 
 internal extension UIView {
-    
+
     func insert(subviews: [UIView], at index: Int? = nil) {
-        
+
         for object in subviews {
             object.translatesAutoresizingMaskIntoConstraints = false
             guard let someIndex = index else {
@@ -42,34 +42,34 @@ internal extension UIView {
 }
 
 protocol UILayoutElement {
-    
+
     var bottomAnchor: NSLayoutYAxisAnchor {get}
-    
+
     var centerXAnchor: NSLayoutXAxisAnchor {get}
-    
+
     var centerYAnchor: NSLayoutYAxisAnchor {get}
-    
+
     var heightAnchor: NSLayoutDimension {get}
-    
+
     var leadingAnchor: NSLayoutXAxisAnchor {get}
-    
+
     var leftAnchor: NSLayoutXAxisAnchor {get}
-    
+
     var rightAnchor: NSLayoutXAxisAnchor {get}
-    
+
     var topAnchor: NSLayoutYAxisAnchor {get}
-    
+
     var trailingAnchor: NSLayoutXAxisAnchor {get}
-    
+
     var widthAnchor: NSLayoutDimension {get}
 }
 
 extension UIView: UILayoutElement {
-    
+
     typealias Insets = (top: CGFloat?, left: CGFloat?, bottom: CGFloat?, right: CGFloat?)
-    
+
     func anchor(to element: UILayoutElement, insets: Insets = (0, 0, 0, 0)) {
-        
+
         if let top = insets.top {
             self.topAnchor.constraint(equalTo: element.topAnchor, constant: top).isActive = true
         }
@@ -86,9 +86,9 @@ extension UIView: UILayoutElement {
 }
 
 extension UIView {
-    
+
     private class func animationOption(for curve: UIViewAnimationCurve) -> UIViewAnimationOptions {
-        
+
         switch curve {
         case .easeIn: return UIViewAnimationOptions.curveEaseIn
         case .easeInOut: return UIViewAnimationOptions.curveEaseInOut
@@ -96,14 +96,14 @@ extension UIView {
         case .easeOut: return UIViewAnimationOptions.curveEaseOut
         }
     }
-    
+
   class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> (), completion: @escaping ((Bool) -> ())) {
-    
+
     UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: completion)
   }
   
   class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> ()) {
-    
+
     UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: nil)
   }
 }

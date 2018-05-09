@@ -9,50 +9,50 @@
 import UIKit
 
 fileprivate extension IndexPath {
-    
+
     func next() -> IndexPath {
         return IndexPath.init(row: self.row + 1, section: self.section)
     }
-    
+
     func previous() -> IndexPath {
         return IndexPath.init(row: self.row - 1, section: self.section)
     }
-    
+
     func step(over: Int) -> IndexPath {
         return IndexPath.init(row: self.row + over, section: self.section)
     }
 }
 
 class ActionCollection: UICollectionView {
-    
+
     enum ReuseID: String {
-        
+
         case separator
         case cell
     }
-    
+
     fileprivate let topView = UIView()
-    
+
     fileprivate let bottomView = UIView()
-    
+
     fileprivate var indexPathForHighlightedCell: IndexPath?
-    
+
     //@available(iOS 10.0, *)
     //fileprivate lazy var generator: UISelectionFeedbackGenerator? = nil
-    
+
     fileprivate var generator: NSObject?
-    
+
     fileprivate var timer: Timer?
-    
+
     init() {
-        
+
         let layout = UICollectionViewFlowLayout()
-        
+
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        
+
         super.init(frame: CGRect.zero, collectionViewLayout: layout)
-        
+
         setup()
     }
    
@@ -62,9 +62,9 @@ class ActionCollection: UICollectionView {
 }
 
 extension ActionCollection {
-    
+
     func setup() {
-        
+
         self.register(ActionCollectionViewCell.self, forCellWithReuseIdentifier: ReuseID.cell.rawValue)
         self.register(SeparatorCell.self, forCellWithReuseIdentifier: ReuseID.separator.rawValue)
 

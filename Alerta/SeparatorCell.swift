@@ -7,21 +7,21 @@
 //
 
 class SeparatorCell: UICollectionViewCell {
-    
+
     fileprivate let effectView = UIVisualEffectView()
-    
+
     override init(frame: CGRect) {
-        
+
         super.init(frame: frame)
-        
+
         effectView.effect = UIVibrancyEffect.init(blurEffect: UIBlurEffect.init(style: .extraLight))
         effectView.contentView.backgroundColor = .white
-        
+
         self.contentView.insert(subviews: [effectView])
-        
+
         effectView.anchor(to: self.contentView)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

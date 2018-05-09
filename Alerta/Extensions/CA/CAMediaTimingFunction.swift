@@ -9,7 +9,7 @@
 import UIKit
 
 internal extension CAMediaTimingFunction {
-    
+
     static var linear: CAMediaTimingFunction {
         return CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
     }
