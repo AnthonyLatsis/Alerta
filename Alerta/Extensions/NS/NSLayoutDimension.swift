@@ -9,10 +9,8 @@
 import UIKit
 
 internal extension NSLayoutDimension {
-
-    internal func equals(_ constant: CGFloat) {
-
-        self.constraint(equalToConstant: constant).activate()
+    @discardableResult internal func equals(_ constant: CGFloat) -> NSLayoutConstraint {
+        return self.constraint(equalToConstant: constant).active()
     }
 }
 

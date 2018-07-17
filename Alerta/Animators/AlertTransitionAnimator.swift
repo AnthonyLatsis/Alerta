@@ -36,45 +36,39 @@ final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
 
             dimmingView.anchor(to: containerView)
 
-            if UIDevice.current.orientation.isPortrait {
-
-                alert.leftAnchor.equals(containerView.leftAnchor)
-                alert.rightAnchor.equals(containerView.rightAnchor)
+            if UIDevice.current.orientation.isLandscape {
+                alert.widthAnchor.equals(UIScreen.main.bounds.height * 0.72)
             } else {
-                alert.widthAnchor.equals(UIScreen.main.bounds.width * 0.6)
-                alert.centerXAnchor.equals(containerView.centerXAnchor)
+                alert.widthAnchor.equals(UIScreen.main.bounds.width * 0.72)
             }
+            alert.centerXAnchor.equals(containerView.centerXAnchor)
             alert.centerYAnchor.equals(containerView.centerYAnchor)
         }
         let duration = transitionDuration(using: transitionContext)
 
         UIView.animate(withDuration: dimDuration) {
-
-            if self.mode == .present {
-                self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            } else {
-                self.dimmingView.backgroundColor = .clear
-            }
+            self.dimmingView.backgroundColor = (self.mode == .present)
+                ? UIColor.black.withAlphaComponent(0.4)
+                : .clear
         }
         if mode == .present {
-
             alert.transform = CGAffineTransform.init(scaleX: 1.5, y: 1.5)
 
             let animator = UIViewPropertyAnimator.init(duration: duration, controlPoint1: CGPoint.init(x: 0, y: 0.9), controlPoint2: CGPoint.init(x: 0.1, y: 1.0)) {
 
                 alert.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
             }
+            animator.addCompletion { _ in
+                transitionContext.completeTransition(true)
+            }
             animator.startAnimation()
             return
         }
         let animator = UIViewPropertyAnimator.init(duration: duration, curve: .easeOut) {
-
             alert.alpha = 0.0
         }
         animator.addCompletion { _ in
-            if self.mode == .dismiss {
-                self.dimmingView.removeFromSuperview()
-            }
+            self.dimmingView.removeFromSuperview()
             transitionContext.completeTransition(true)
         }
         animator.startAnimation()

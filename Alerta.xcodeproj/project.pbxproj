@@ -13,7 +13,6 @@
 		5925B4FA20824EEF008A4904 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925B4F920824EEF008A4904 /* UIColor.swift */; };
 		59278BF120801E74006212BC /* Alerta.h in Headers */ = {isa = PBXBuildFile; fileRef = 59278BEF20801E74006212BC /* Alerta.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59278C0020801F0D006212BC /* ActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BF720801F0C006212BC /* ActionController.swift */; };
-		59278C0120801F0D006212BC /* AVAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BF820801F0C006212BC /* AVAlertController.swift */; };
 		59278C0220801F0D006212BC /* ActionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BF920801F0C006212BC /* ActionHeader.swift */; };
 		59278C0320801F0D006212BC /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFA20801F0C006212BC /* ActionView.swift */; };
 		59278C0420801F0D006212BC /* ActionCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BFB20801F0C006212BC /* ActionCollection.swift */; };
@@ -38,7 +37,6 @@
 		59278BEF20801E74006212BC /* Alerta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alerta.h; sourceTree = "<group>"; };
 		59278BF020801E74006212BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		59278BF720801F0C006212BC /* ActionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionController.swift; sourceTree = "<group>"; };
-		59278BF820801F0C006212BC /* AVAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVAlertController.swift; sourceTree = "<group>"; };
 		59278BF920801F0C006212BC /* ActionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionHeader.swift; sourceTree = "<group>"; };
 		59278BFA20801F0C006212BC /* ActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		59278BFB20801F0C006212BC /* ActionCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionCollection.swift; sourceTree = "<group>"; };
@@ -84,10 +82,7 @@
 		59278BEE20801E74006212BC /* Alerta */ = {
 			isa = PBXGroup;
 			children = (
-				59278BF820801F0C006212BC /* AVAlertController.swift */,
 				59278BFE20801F0C006212BC /* AVAlertView.swift */,
-				59278BFF20801F0D006212BC /* AlertTransitionAnimator.swift */,
-				59278BFD20801F0C006212BC /* ActionSheetTransitionAnimator.swift */,
 				59278BF720801F0C006212BC /* ActionController.swift */,
 				59278BFA20801F0C006212BC /* ActionView.swift */,
 				59278BF920801F0C006212BC /* ActionHeader.swift */,
@@ -95,6 +90,7 @@
 				59278BFC20801F0C006212BC /* ActionCell.swift */,
 				590AF4572085B6FB00C2D2E4 /* SeparatorCell.swift */,
 				590AF45920866D5200C2D2E4 /* AlertaLayout.swift */,
+				59F165E720FE9CA400CED8A9 /* Animators */,
 				5951558120805AF00054892E /* Extensions */,
 				59278C0A20801F99006212BC /* Support Files */,
 			);
@@ -147,6 +143,15 @@
 				5951558820805ED00054892E /* NSLayoutDimension.swift */,
 			);
 			path = NS;
+			sourceTree = "<group>";
+		};
+		59F165E720FE9CA400CED8A9 /* Animators */ = {
+			isa = PBXGroup;
+			children = (
+				59278BFF20801F0D006212BC /* AlertTransitionAnimator.swift */,
+				59278BFD20801F0C006212BC /* ActionSheetTransitionAnimator.swift */,
+			);
+			path = Animators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,7 +241,6 @@
 				5925B4FA20824EEF008A4904 /* UIColor.swift in Sources */,
 				59278C0020801F0D006212BC /* ActionController.swift in Sources */,
 				59278C0620801F0D006212BC /* ActionSheetTransitionAnimator.swift in Sources */,
-				59278C0120801F0D006212BC /* AVAlertController.swift in Sources */,
 				59278C0220801F0D006212BC /* ActionHeader.swift in Sources */,
 				5951558D20805ED00054892E /* NSLayoutDimension.swift in Sources */,
 				59278C0820801F0D006212BC /* AlertTransitionAnimator.swift in Sources */,

@@ -9,7 +9,6 @@
 import UIKit
 
 enum AnimationControllerMode {
-
     case present
     case dismiss
 }
@@ -62,33 +61,32 @@ final class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTra
             baseView.anchor(to: containerView)
 
             if UIDevice.current.orientation.isLandscape {
-                to.bottomAnchor.equals(baseView.bottomAnchor, constant: -bezel)
-                to.widthAnchor.equals(UIScreen.main.bounds.height * 0.5 - bezel * 2)
+                to.widthAnchor.equals(UIScreen.main.bounds.height - bezel * 2)
                 to.centerXAnchor.equals(baseView.centerXAnchor)
             } else {
-                to.anchor(to: baseView, insets: (nil, bezel, bezel, bezel))
+                to.anchor(to: baseView, insets: (nil, bezel, nil, bezel))
             }
+            to.bottomAnchor.equals(baseView.bottomAnchor, constant: -bezel)
         }
         let duration = transitionDuration(using: transitionContext)
-        let animation = CABasicAnimation.init(keyPath: "position.y")
 
+        let animation = CABasicAnimation.init(keyPath: "position.y")
         animation.duration = duration
 
         UIView.animate(withDuration: dimDuration) {
-
-            if self.mode == .present {
-                self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            } else {
-                self.dimmingView.backgroundColor = .clear
-            }
+            self.dimmingView.backgroundColor = (self.mode == .present)
+                ? UIColor.black.withAlphaComponent(0.4)
+                : .clear
         }
         if mode == .present {
-
             self.baseView.center.y = UIScreen.main.bounds.height * 1.5
 
             let animator = UIViewPropertyAnimator.init(duration: duration, controlPoint1: CGPoint.init(x: 0, y: 0.9), controlPoint2: CGPoint.init(x: 0.1, y: 1.0)) {
 
                 self.baseView.center.y = UIScreen.main.bounds.height * 0.5
+            }
+            animator.addCompletion { _ in
+                transitionContext.completeTransition(true)
             }
             animator.startAnimation()
             return
@@ -97,17 +95,12 @@ final class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTra
 
             let height = alert.bounds.height
 
-            if height > UIScreen.main.bounds.height * 0.25 {
-                self.baseView.center.y = UIScreen.main.bounds.height * 1.5
-            } else {
-                self.baseView.center.y = UIScreen.main.bounds.height
-            }
+            self.baseView.center.y = (height > UIScreen.main.bounds.height * 0.25)
+                ? UIScreen.main.bounds.height * 1.5
+                : UIScreen.main.bounds.height
         }
         animator.addCompletion { _ in
-
-            if self.mode == .dismiss {
-                self.dimmingView.removeFromSuperview()
-            }
+            self.dimmingView.removeFromSuperview()
             transitionContext.completeTransition(true)
         }
         animator.startAnimation()

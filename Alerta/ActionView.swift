@@ -28,10 +28,9 @@ protocol ActionViewDelegate: class {
 
 final class ActionView: UIView {
 
-
     weak var delegate: ActionViewDelegate?
 
-    
+
     fileprivate let mainDimmingKnockoutView = UIView()
 
     fileprivate let blurView = UIVisualEffectView()
@@ -46,22 +45,19 @@ final class ActionView: UIView {
 
     fileprivate var header: ActionHeader?
 
-    
+
     fileprivate let cancelDimmingKnockoutView = UIView()
 
     fileprivate let cancelBlurView = UIVisualEffectView()
 
-    fileprivate var cancelContainer = UIView()
+    fileprivate var cancelView: UIView?
 
-    fileprivate var cancelAction: UIView?
 
-    
     fileprivate var layout: AlertaLayout!
 
     fileprivate var config: ActionViewConfiguration!
 
     override init(frame: CGRect) {
-
         super.init(frame: frame)
 
         setUI()
@@ -77,7 +73,6 @@ final class ActionView: UIView {
 extension ActionView {
 
     override func layoutSubviews() {
-
         super.layoutSubviews()
 
         let mask1 = UIView.init(frame: mainDimmingKnockoutView.bounds)
@@ -116,7 +111,6 @@ extension ActionView {
 extension ActionView: View {
 
     func setUI() {
-
         self.backgroundColor = .clear
         self.layer.setValue(false, forKey: "allowsGroupBlending")
 
@@ -131,7 +125,6 @@ extension ActionView: View {
         blurView.layer.masksToBounds = true
 
         actionsContainer.backgroundColor = .clear
-        cancelContainer.backgroundColor = .clear
 
         cancelBlurView.effect = UIBlurEffect.init(style: .extraLight)
         cancelBlurView.layer.masksToBounds = true
@@ -159,11 +152,8 @@ extension ActionView: View {
     }
 
     func setTargets() {
-
-        if let cancel = cancelAction {
-
+        if let cancel = cancelView {
             let gesture = UITapGestureRecognizer.init(target: self, action: #selector(self.cancel))
-
             cancel.addGestureRecognizer(gesture)
         }
     }
@@ -184,39 +174,33 @@ extension ActionView {
 
             self.insert(subviews: [cancelDimmingKnockoutView, cancelBlurView])
 
-            cancelBlurView.contentView.insert(subviews: [cancelContainer])
-
-            cancelDimmingKnockoutView.anchor(to: self, insets: (nil, 0, 0, 0))
-
-            cancelDimmingKnockoutView.topAnchor.equals(mainDimmingKnockoutView.bottomAnchor, constant: bezel)
-            cancelDimmingKnockoutView.heightAnchor.equals(config.style.actionHeight)
-
-            cancelBlurView.anchor(to: cancelDimmingKnockoutView)
-            cancelContainer.anchor(to: cancelBlurView.contentView)
-
             let label = UILabel()
 
             label.textAlignment = .center
-            label.textColor = layout.textColors[.action(.cancel)]
-            label.font = layout.fonts[.action(.cancel)]
+            label.textColor = layout.textColors[config.style]?[.action(.cancel)]
+            label.font = layout.fonts[config.style]?[.action(.cancel)]
             label.text = cancel.title
+            label.isUserInteractionEnabled = true
             label.backgroundColor = UIColor.white
 
-            cancelContainer.insert(subviews: [label])
+            cancelBlurView.contentView.insert(subviews: [label])
 
-            label.anchor(to: cancelContainer)
+            cancelDimmingKnockoutView.anchor(to: self, insets: (nil, 0, 0, 0))
 
-            self.cancelAction = label
+            cancelDimmingKnockoutView.topAnchor.equals(mainDimmingKnockoutView.bottomAnchor, constant: bezel * 0.8)
+            cancelDimmingKnockoutView.heightAnchor.equals(config.style.actionHeight)
 
+            cancelBlurView.anchor(to: cancelDimmingKnockoutView)
+            label.anchor(to: cancelBlurView.contentView)
+
+            self.cancelView = label
         } else {
             mainDimmingKnockoutView.bottomAnchor.equals(self.bottomAnchor)
         }
         if config.headerConfig.hasHeader {
-
             self.body.insert(subviews: [headerContainer])
 
             let header = ActionHeader()
-
             header.setup(for: config.headerConfig, layout: layout)
 
             self.headerContainer.insert(subviews: [header])
@@ -232,33 +216,31 @@ extension ActionView {
             self.actionsContainer.topAnchor.equals(self.body.topAnchor)
         }
         func height(actions: Int) {
-
-            let visible = (actions > 7) ? 7 : actions
+            let limit = layout.actionCountLimit(config.style)
+            
+            let visible = (actions > limit) ? limit : actions
 
             var height = CGFloat(visible) * config.style.actionHeight + CGFloat(visible - 1) * AlertaLayout.separatorHeight
 
-            height += (actions > 7) ? (config.style.actionHeight * 0.3) : 0.0
+            height += (actions > limit) ? (config.style.actionHeight * 0.2) : 0.0
 
             self.actionsContainer.heightAnchor.equals(height)
         }
         if config.cancelAction != nil && config.style == .actionSheet {
-
             height(actions: config.actionCount - 1)
         } else {
             if config.actionCount == 2 && config.style == .alert {
-
                 height(actions: 1)
+            } else {
+                height(actions: config.actionCount)
             }
-            height(actions: config.actionCount)
         }
         self.setTargets()
     }
 }
 
 extension ActionView {
-
     func insert(table: UIView) {
-
         self.actionsContainer.insert(subviews: [table], at: 10)
 
         table.anchor(to: self.actionsContainer)
@@ -266,9 +248,7 @@ extension ActionView {
 }
 
 extension ActionView {
-
     @objc func cancel() {
-
         self.delegate?.cancel()
     }
 }

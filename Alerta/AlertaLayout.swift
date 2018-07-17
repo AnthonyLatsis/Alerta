@@ -9,7 +9,6 @@
 public enum AlertaElement: Hashable {
 
     public enum AlertaActionElement {
-
         case `default`
         case destructive
         case cancel
@@ -30,64 +29,81 @@ public class AlertaLayout {
 
     public var bodyCornerRadius: CGFloat = 13.0
     public var cancelActionCornerRadius: CGFloat = 13.0
-
-    var textColors: [AlertaElement : UIColor] = [
-
-        .message              : UIColor.init(red: 0.56, green: 0.56, blue: 0.56),
-        .title                : UIColor.init(red: 0.56, green: 0.56, blue: 0.56),
-        .action(.cancel)      : UIColor.init(red: 0, green: 0.478431, blue: 1),
-        .action(.default)     : UIColor.init(red: 0, green: 0.478431, blue: 1),
-        .action(.destructive) : UIColor.init(red: 1, green: 0.231373, blue: 0.188235)
+    
+    var textColors: [ActionControllerStyle : [AlertaElement : UIColor]] = [
+        .alert: [
+            .message             : .black,
+            .title               : .black,
+            .action(.cancel)     : UIColor.init(red: 0, green: 0.478431, blue: 1),
+            .action(.default)    : UIColor.init(red: 0, green: 0.478431, blue: 1),
+            .action(.destructive): UIColor.init(red: 1, green: 0.231373, blue: 0.188235),
+        ],
+        .actionSheet: [
+            .message             : UIColor.init(white: 0.56, alpha: 1.0),
+            .title               : UIColor.init(white: 0.56, alpha: 1.0),
+            .action(.cancel)     : UIColor.init(red: 0, green: 0.478431, blue: 1),
+            .action(.default)    : UIColor.init(red: 0, green: 0.478431, blue: 1),
+            .action(.destructive): UIColor.init(red: 1, green: 0.231373, blue: 0.188235),
+        ]
     ]
 
-    var fonts: [AlertaElement : UIFont] = [
-
-        .message              : UIFont.systemFont(ofSize: 13, weight: .regular),
-        .title                : UIFont.systemFont(ofSize: 13, weight: .semibold),
-        .action(.cancel)      : UIFont.systemFont(ofSize: 20, weight: .semibold),
-        .action(.default)     : UIFont.systemFont(ofSize: 20, weight: .regular),
-        .action(.destructive) : UIFont.systemFont(ofSize: 20, weight: .regular)
+    var fonts: [ActionControllerStyle : [AlertaElement : UIFont]] = [
+        .alert: [
+            .message             : UIFont.systemFont(ofSize: 13, weight: .regular),
+            .title               : UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .action(.cancel)     : UIFont.systemFont(ofSize: 17, weight: .semibold),
+            .action(.default)    : UIFont.systemFont(ofSize: 17, weight: .regular),
+            .action(.destructive): UIFont.systemFont(ofSize: 17, weight: .regular),
+        ],
+        .actionSheet: [
+            .message             : UIFont.systemFont(ofSize: 13, weight: .regular),
+            .title               : UIFont.systemFont(ofSize: 13, weight: .semibold),
+            .action(.cancel)     : UIFont.systemFont(ofSize: 20, weight: .semibold),
+            .action(.default)    : UIFont.systemFont(ofSize: 20, weight: .regular),
+            .action(.destructive): UIFont.systemFont(ofSize: 20, weight: .regular),
+        ]
     ]
 
     public init() {}
 
     public func set(textColor: UIColor, for element: AlertaElement) {
-
-        if case .any = element {
-
-            textColors[.message] = textColor
-            textColors[.title] = textColor
-            textColors[.action(.cancel)] = textColor
-            textColors[.action(.destructive)] = textColor
-            textColors[.action(.default)] = textColor
-
-        } else if case .action(.any) = element {
-
-            textColors[.action(.cancel)] = textColor
-            textColors[.action(.destructive)] = textColor
-            textColors[.action(.default)] = textColor
-        } else {
-            textColors[element] = textColor
+        for style in [.alert, .actionSheet] as [ActionControllerStyle] {
+            if case .any = element {
+                textColors[style]?[.message] = textColor
+                textColors[style]?[.title] = textColor
+                textColors[style]?[.action(.cancel)] = textColor
+                textColors[style]?[.action(.destructive)] = textColor
+                textColors[style]?[.action(.default)] = textColor
+            } else if case .action(.any) = element {
+                textColors[style]?[.action(.cancel)] = textColor
+                textColors[style]?[.action(.destructive)] = textColor
+                textColors[style]?[.action(.default)] = textColor
+            } else {
+                textColors[style]?[element] = textColor
+            }
         }
     }
 
     public func set(font: UIFont, for element: AlertaElement) {
-
-        if case .any = element {
-
-            fonts[.message] = font
-            fonts[.title] = font
-            fonts[.action(.cancel)] = font
-            fonts[.action(.destructive)] = font
-            fonts[.action(.default)] = font
-
-        } else if case .action(.any) = element {
-
-            fonts[.action(.cancel)] = font
-            fonts[.action(.destructive)] = font
-            fonts[.action(.default)] = font
-        } else {
-            fonts[element] = font
+        for style in [.alert, .actionSheet] as [ActionControllerStyle] {
+            if case .any = element {
+                fonts[style]?[.message] = font
+                fonts[style]?[.title] = font
+                fonts[style]?[.action(.cancel)] = font
+                fonts[style]?[.action(.destructive)] = font
+                fonts[style]?[.action(.default)] = font
+            } else if case .action(.any) = element {
+                fonts[style]?[.action(.cancel)] = font
+                fonts[style]?[.action(.destructive)] = font
+                fonts[style]?[.action(.default)] = font
+            } else {
+                fonts[style]?[element] = font
+            }
         }
+    }
+    
+    func actionCountLimit(_ style: ActionControllerStyle) -> Int {
+
+        return (style == .alert) ? 2 : 6
     }
 }
