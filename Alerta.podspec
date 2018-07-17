@@ -10,7 +10,7 @@
 Pod::Spec.new do |spec|
 
 	spec.name         			= "Alerta"
-	spec.version 		 		    = "4.0.2"
+	spec.version 		 		    = "4.0.3"
 	spec.license      			= { :type => "MIT", :file => "LICENSE" }
 
   spec.platform     			= :ios, "10.0"
@@ -24,7 +24,7 @@ Pod::Spec.new do |spec|
   spec.author             = { "Anthony Latsis" => "aqamoss3fan2010@gmail.com" }
   spec.social_media_url   = "https://www.instagram.com/anthonylatsis/"
   
-  spec.summary      			= "A sweet cherry over Auto Layout to make your constraints easier, tidier and more compact."
+  spec.summary      			= "An iOS native-style alert controller you can customize to your heart's content."
 
   spec.requires_arc 			= true
 

@@ -10,6 +10,8 @@ import UIKit
 
 struct ActionHeaderConfiguration {
 
+    let style: ActionControllerStyle
+
     let title: String?
 
     let message: String?
@@ -64,8 +66,8 @@ extension ActionHeader {
         titleHeightConstraint?.constant = titleHeight
         messageHeightConstraint?.constant = messageHeight
 
-        titleHeightConstraint?.activate()
-        messageHeightConstraint?.activate()
+        titleHeightConstraint?.isActive = true
+        messageHeightConstraint?.isActive = true
     }
 }
 
@@ -81,43 +83,52 @@ extension ActionHeader {
             self.insert(subviews: [customView], at: 10)
 
             customView.anchor(to: self)
-
         } else {
             if let title = config.title {
-
-                self.titleLabel.textColor = layout.textColors[.title]
-                self.titleLabel.text = title
-                self.titleLabel.textAlignment = .center
-                self.titleLabel.font = layout.fonts[.title]
+                self.titleLabel.textColor = layout.textColors[config.style]?[.title]
+                self.titleLabel.font = layout.fonts[config.style]?[.title]
                 self.titleLabel.numberOfLines = 0
+
+                let attrstr = NSMutableAttributedString.init(string: title)
+
+                let style = NSMutableParagraphStyle.init()
+                style.lineSpacing = config.style == .alert ? 2 : 2.5
+                style.alignment = .center
+
+                attrstr.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrstr.length))
+
+                self.titleLabel.attributedText = attrstr
 
                 self.insert(subviews: [titleLabel], at: 0)
 
                 self.titleLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
 
-                titleHeightConstraint = self.titleLabel.heightAnchor.constraint(equalToConstant: 0)
+                titleHeightConstraint = self.titleLabel.heightAnchor.equals(0).inactive()
             }
             if let message = config.message {
-
-                self.messageLabel.textColor = layout.textColors[.message]
-                self.messageLabel.font = layout.fonts[.message]
+                self.messageLabel.textColor = layout.textColors[config.style]?[.message]
+                self.messageLabel.font = layout.fonts[config.style]?[.message]
                 self.messageLabel.numberOfLines = 0
 
-                let attrstr = NSMutableAttributedString.init(string: message)
+                if config.style == .actionSheet {
+                    let attrstr = NSMutableAttributedString.init(string: message)
 
-                let style = NSMutableParagraphStyle.init()
-                style.lineSpacing = 2.5
-                style.alignment = .center
+                    let style = NSMutableParagraphStyle.init()
+                    style.lineSpacing = 2.5
+                    style.alignment = .center
 
-                attrstr.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrstr.length))
+                    attrstr.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrstr.length))
 
-                self.messageLabel.attributedText = attrstr
-
+                    self.messageLabel.attributedText = attrstr
+                } else {
+                    self.messageLabel.text = message
+                    self.messageLabel.textAlignment = .center
+                }
                 self.insert(subviews: [messageLabel], at: 0)
 
-               self.messageLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
+                self.messageLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
 
-                messageHeightConstraint = self.messageLabel.heightAnchor.constraint(equalToConstant: 0)
+                messageHeightConstraint = self.messageLabel.heightAnchor.equals(0).inactive()
             }
             if config.title != nil && config.message != nil {
 

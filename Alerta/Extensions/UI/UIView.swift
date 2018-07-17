@@ -9,20 +9,14 @@
 import UIKit
 
 protocol View {
-
     func setTargets()
-
     func setUI()
-
     func setConstraints()
 }
 
 extension View {
-
     func setTargets() {}
-
     func setUI() {}
-
     func setConstraints() {}
 }
 

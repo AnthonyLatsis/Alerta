@@ -11,12 +11,16 @@ import UIKit
 internal extension NSLayoutConstraint {
 
     func with(m: CGFloat) -> NSLayoutConstraint {
-
         return NSLayoutConstraint.init(item: self.firstItem as Any, attribute: self.firstAttribute, relatedBy: self.relation, toItem: self.secondItem, attribute: self.secondAttribute, multiplier: m, constant: self.constant)
     }
 
-    func activate() {
+    func active() -> NSLayoutConstraint {
+        isActive = true
+        return self
+    }
 
-        self.isActive = true
+    func inactive() -> NSLayoutConstraint {
+        isActive = false
+        return self
     }
 }

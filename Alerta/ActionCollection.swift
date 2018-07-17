@@ -26,7 +26,6 @@ fileprivate extension IndexPath {
 class ActionCollection: UICollectionView {
 
     enum ReuseID: String {
-
         case separator
         case cell
     }
@@ -45,7 +44,6 @@ class ActionCollection: UICollectionView {
     fileprivate var timer: Timer?
 
     init() {
-
         let layout = UICollectionViewFlowLayout()
 
         layout.minimumLineSpacing = 0
@@ -62,9 +60,7 @@ class ActionCollection: UICollectionView {
 }
 
 extension ActionCollection {
-
     func setup() {
-
         self.register(ActionCollectionViewCell.self, forCellWithReuseIdentifier: ReuseID.cell.rawValue)
         self.register(SeparatorCell.self, forCellWithReuseIdentifier: ReuseID.separator.rawValue)
 

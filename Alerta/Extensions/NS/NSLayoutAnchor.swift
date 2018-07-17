@@ -10,9 +10,9 @@ import UIKit
 
 internal extension NSLayoutAnchor {
 
-    @objc internal func equals(_ anchor: NSLayoutAnchor<AnchorType>, multiplier m: CGFloat = 1.0, constant c: CGFloat = 0.0) {
+    @objc @discardableResult internal func equals(_ anchor: NSLayoutAnchor<AnchorType>, multiplier m: CGFloat = 1.0, constant c: CGFloat = 0.0) -> NSLayoutConstraint {
 
-        self.constraint(equalTo: anchor, constant: c).with(m: m).activate()
+        return constraint(equalTo: anchor, constant: c).with(m: m).active()
     }
 }
 
