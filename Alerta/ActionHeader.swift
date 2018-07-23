@@ -85,9 +85,9 @@ extension ActionHeader {
             customView.anchor(to: self)
         } else {
             if let title = config.title {
-                self.titleLabel.textColor = layout.textColors[config.style]?[.title]
-                self.titleLabel.font = layout.fonts[config.style]?[.title]
-                self.titleLabel.numberOfLines = 0
+                titleLabel.textColor = layout.textColors[config.style]?[.title]
+                titleLabel.font = layout.fonts[config.style]?[.title]
+                titleLabel.numberOfLines = 0
 
                 let attrstr = NSMutableAttributedString.init(string: title)
 
@@ -97,18 +97,18 @@ extension ActionHeader {
 
                 attrstr.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrstr.length))
 
-                self.titleLabel.attributedText = attrstr
+                titleLabel.attributedText = attrstr
 
                 self.insert(subviews: [titleLabel], at: 0)
 
-                self.titleLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
+                titleLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
 
-                titleHeightConstraint = self.titleLabel.heightAnchor.equals(0).inactive()
+                titleHeightConstraint = titleLabel.heightAnchor.lessOrEquals(0).inactive()
             }
             if let message = config.message {
-                self.messageLabel.textColor = layout.textColors[config.style]?[.message]
-                self.messageLabel.font = layout.fonts[config.style]?[.message]
-                self.messageLabel.numberOfLines = 0
+                messageLabel.textColor = layout.textColors[config.style]?[.message]
+                messageLabel.font = layout.fonts[config.style]?[.message]
+                messageLabel.numberOfLines = 0
 
                 if config.style == .actionSheet {
                     let attrstr = NSMutableAttributedString.init(string: message)
@@ -119,31 +119,32 @@ extension ActionHeader {
 
                     attrstr.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrstr.length))
 
-                    self.messageLabel.attributedText = attrstr
+                    messageLabel.attributedText = attrstr
                 } else {
-                    self.messageLabel.text = message
-                    self.messageLabel.textAlignment = .center
+                    messageLabel.text = message
+                    messageLabel.textAlignment = .center
                 }
                 self.insert(subviews: [messageLabel], at: 0)
 
-                self.messageLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
+                messageLabel.anchor(to: self, insets: (nil, indentX, nil, indentX))
 
-                messageHeightConstraint = self.messageLabel.heightAnchor.equals(0).inactive()
+                messageHeightConstraint = messageLabel.heightAnchor.lessOrEquals(0).inactive()
             }
             if config.title != nil && config.message != nil {
 
-                self.titleLabel.topAnchor.equals(self.topAnchor, constant: topIndent)
-                self.messageLabel.bottomAnchor.equals(self.bottomAnchor, constant: -15)
-                self.messageLabel.topAnchor.equals(titleLabel.bottomAnchor, constant: interIndent)
+                titleLabel.topAnchor.equals(self.topAnchor, constant: topIndent)
+                messageLabel.bottomAnchor.equals(self.bottomAnchor, constant: -15)
+                messageLabel.topAnchor.equals(titleLabel.bottomAnchor, constant: interIndent)
             }
             if config.message == nil && config.title != nil {
 
-                self.titleLabel.anchor(to: self, insets: (topIndent, nil, 14, nil))
+                titleLabel.anchor(to: self, insets: (topIndent, nil, 14, nil))
             }
             if config.message != nil && config.title == nil {
 
-                self.messageLabel.anchor(to: self, insets: (topIndent, nil, 14, nil))
+                messageLabel.anchor(to: self, insets: (topIndent, nil, 14, nil))
             }
         }
     }
 }
+

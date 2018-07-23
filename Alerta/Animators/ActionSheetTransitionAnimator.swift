@@ -66,7 +66,14 @@ final class ActionSheetTransitionAnimator: NSObject, UIViewControllerAnimatedTra
             } else {
                 to.anchor(to: baseView, insets: (nil, bezel, nil, bezel))
             }
-            to.bottomAnchor.equals(baseView.bottomAnchor, constant: -bezel)
+            if let window = baseView.window, #available(iOS 11.0, *),
+                    window.safeAreaInsets.bottom > 0 {
+                to.bottomAnchor.equals(baseView.safeAreaLayoutGuide.bottomAnchor)
+                to.topAnchor.greaterOrEquals(baseView.safeAreaLayoutGuide.topAnchor)
+            } else {
+                to.bottomAnchor.equals(baseView.bottomAnchor, constant: -bezel)
+                to.topAnchor.greaterOrEquals(baseView.topAnchor, constant: bezel)
+            }
         }
         let duration = transitionDuration(using: transitionContext)
 

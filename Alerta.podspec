@@ -10,7 +10,7 @@
 Pod::Spec.new do |spec|
 
 	spec.name         			= "Alerta"
-	spec.version 		 		    = "4.0.3"
+	spec.version 		 		    = "4.0.5"
 	spec.license      			= { :type => "MIT", :file => "LICENSE" }
 
   spec.platform     			= :ios, "10.0"
