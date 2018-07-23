@@ -41,7 +41,7 @@ class ActionCollectionViewCell: UICollectionViewCell, ActionCell {
     }
 }
 
-extension ActionCollectionViewCell: View {
+extension ActionCollectionViewCell {
 
     func setUI() {
 

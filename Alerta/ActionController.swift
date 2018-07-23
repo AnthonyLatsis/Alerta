@@ -32,12 +32,7 @@ public enum ActionStyle {
     case destructive
 }
 
-public protocol ActionItem {
-
-    var title: String { get }
-}
-
-public protocol Action: ActionItem {
+public protocol Action {
 
     var title: String { get }
 
@@ -63,7 +58,7 @@ public final class AlertaAction: Action {
 
 public final class ActionController: UIViewController {
 
-    fileprivate let mainView = ActionView()
+    fileprivate let mainView: ActionView
 
     fileprivate let transition: UIViewControllerAnimatedTransitioning & ActionTransitionAnimator
 
@@ -76,13 +71,15 @@ public final class ActionController: UIViewController {
     fileprivate var cancelAction: Action?
 
 
-    let style: ActionControllerStyle
+    public let blurEffect = UIBlurEffect.init(style: .extraLight)
+
+    public let style: ActionControllerStyle
 
     let layout: AlertaLayout
 
-    let titleText: String?
+    public let titleText: String?
 
-    let message: String?
+    public let message: String?
 
     var header: UIView?
 
@@ -96,6 +93,8 @@ public final class ActionController: UIViewController {
 
         self.transition = (style == .alert) ? AlertTransitionAnimator() :
                                               ActionSheetTransitionAnimator()
+
+        self.mainView = ActionView.init(blurEffect: blurEffect)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -128,11 +127,9 @@ public extension ActionController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let actionCount = actions.count + (cancelAction == nil ? 0 : 1)
-
         let headerConfig = ActionHeaderConfiguration.init(style: style, title: titleText, message: message, header: header)
 
-        let config = ActionViewConfiguration.init(style: style, actionCount: actionCount, cancelAction: cancelAction, headerConfig: headerConfig)
+        let config = ActionViewConfiguration.init(style: style, actionCount: actions.count, cancelAction: cancelAction, headerConfig: headerConfig)
 
         self.mainView.setup(for: config, layout: layout)
 
@@ -155,17 +152,29 @@ public extension ActionController {
     public func add(action: Action) {
 
         if action.style == .cancel {
-            switch style {
-            case .actionSheet:
-                if let _ = cancelAction {
-                    fatalError("You can't have more than one cancel action")
+            if let _ = cancelAction {
+                fatalError("You can't have more than one cancel action")
+            }
+            cancelAction = action
+
+            if style == .alert {
+                switch actions.count {
+                case 1: actions.insert(action, at: 0)
+                case 0, 2...: actions.append(action)
+                default: fatalError()
                 }
-                cancelAction = action
-            case .alert:
-                if actions.contains(where: {$0.style == .cancel}) {
-                    fatalError("You can't have more than one cancel action")
-                }
-                self.actions.append(action)
+            }
+            return
+        }
+        if let cancel = cancelAction, style == .alert {
+            switch actions.count {
+            case 1: actions.append(action)
+            case 2:
+                actions.remove(at: 0)
+                actions.append(action)
+                actions.append(cancel)
+            case 3...: actions.insert(action, at: actions.endIndex - 1)
+            default: fatalError()
             }
         } else {
             self.actions.append(action)
@@ -218,9 +227,9 @@ extension ActionController: UICollectionViewDataSource {
 extension ActionController: UICollectionViewDelegate {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        self.dismiss(animated: true,
-                     completion: (actions[indexPath.row] as? AlertaAction)?.handler)
+        if indexPath.row % 2 == 0 {
+            self.dismiss(animated: true, completion: (actions[indexPath.row / 2] as? AlertaAction)?.handler)
+        }
     }
 }
 

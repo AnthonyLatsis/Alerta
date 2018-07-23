@@ -33,11 +33,11 @@ final class ActionView: UIView {
 
     fileprivate let mainDimmingKnockoutView = UIView()
 
-    fileprivate let blurView = UIVisualEffectView()
+    fileprivate let blurView: UIVisualEffectView
 
     fileprivate let body = UIView()
 
-    fileprivate let separatorView = UIVisualEffectView()
+    fileprivate let separatorView: UIVisualEffectView
 
     fileprivate let actionsContainer = UIView()
 
@@ -48,7 +48,7 @@ final class ActionView: UIView {
 
     fileprivate let cancelDimmingKnockoutView = UIView()
 
-    fileprivate let cancelBlurView = UIVisualEffectView()
+    fileprivate let cancelBlurView: UIVisualEffectView
 
     fileprivate var cancelView: UIView?
 
@@ -57,8 +57,14 @@ final class ActionView: UIView {
 
     fileprivate var config: ActionViewConfiguration!
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(blurEffect: UIBlurEffect) {
+
+        self.blurView = UIVisualEffectView.init(effect: blurEffect)
+        self.separatorView = UIVisualEffectView.init(
+            effect: UIVibrancyEffect.init(blurEffect: blurEffect))
+        self.cancelBlurView = UIVisualEffectView.init(effect: blurEffect)
+
+        super.init(frame: CGRect.zero)
 
         setUI()
         setConstraints()
@@ -108,7 +114,7 @@ extension ActionView {
 }
 
 
-extension ActionView: View {
+extension ActionView {
 
     func setUI() {
         self.backgroundColor = .clear
@@ -118,15 +124,12 @@ extension ActionView: View {
         mainDimmingKnockoutView.backgroundColor = UIColor.white
         mainDimmingKnockoutView.clipsToBounds = true
 
-        separatorView.effect = UIVibrancyEffect.init(blurEffect: UIBlurEffect.init(style: .extraLight))
         separatorView.contentView.backgroundColor = .white
 
-        blurView.effect = UIBlurEffect.init(style: .extraLight)
         blurView.layer.masksToBounds = true
 
         actionsContainer.backgroundColor = .clear
 
-        cancelBlurView.effect = UIBlurEffect.init(style: .extraLight)
         cancelBlurView.layer.masksToBounds = true
 
         self.insert(subviews: [mainDimmingKnockoutView, blurView])
@@ -222,18 +225,14 @@ extension ActionView {
 
             var height = CGFloat(visible) * config.style.actionHeight + CGFloat(visible - 1) * AlertaLayout.separatorHeight
 
-            height += (actions > limit) ? (config.style.actionHeight * 0.2) : 0.0
+            height += (actions > limit) ? (config.style.actionHeight * 0.2) : 0
 
             self.actionsContainer.heightAnchor.equals(height)
         }
-        if config.cancelAction != nil && config.style == .actionSheet {
-            height(actions: config.actionCount - 1)
+        if config.actionCount == 2 && config.style == .alert {
+            height(actions: 1)
         } else {
-            if config.actionCount == 2 && config.style == .alert {
-                height(actions: 1)
-            } else {
-                height(actions: config.actionCount)
-            }
+            height(actions: config.actionCount)
         }
         self.setTargets()
     }

@@ -8,18 +8,6 @@
 
 import UIKit
 
-protocol View {
-    func setTargets()
-    func setUI()
-    func setConstraints()
-}
-
-extension View {
-    func setTargets() {}
-    func setUI() {}
-    func setConstraints() {}
-}
-
 internal extension UIView {
 
     func insert(subviews: [UIView], at index: Int? = nil) {
@@ -36,29 +24,23 @@ internal extension UIView {
 }
 
 protocol UILayoutElement {
-
-    var bottomAnchor: NSLayoutYAxisAnchor {get}
-
-    var centerXAnchor: NSLayoutXAxisAnchor {get}
-
-    var centerYAnchor: NSLayoutYAxisAnchor {get}
-
-    var heightAnchor: NSLayoutDimension {get}
-
-    var leadingAnchor: NSLayoutXAxisAnchor {get}
-
-    var leftAnchor: NSLayoutXAxisAnchor {get}
-
-    var rightAnchor: NSLayoutXAxisAnchor {get}
-
-    var topAnchor: NSLayoutYAxisAnchor {get}
-
-    var trailingAnchor: NSLayoutXAxisAnchor {get}
-
-    var widthAnchor: NSLayoutDimension {get}
+    var bottomAnchor: NSLayoutYAxisAnchor { get }
+    var centerXAnchor: NSLayoutXAxisAnchor { get }
+    var centerYAnchor: NSLayoutYAxisAnchor { get }
+    var leftAnchor: NSLayoutXAxisAnchor { get }
+    var rightAnchor: NSLayoutXAxisAnchor { get }
+    var topAnchor: NSLayoutYAxisAnchor { get }
+    var leadingAnchor: NSLayoutXAxisAnchor { get }
+    var trailingAnchor: NSLayoutXAxisAnchor { get }
+    var heightAnchor: NSLayoutDimension { get }
+    var widthAnchor: NSLayoutDimension { get }
 }
 
-extension UIView: UILayoutElement {
+extension UILayoutGuide: UILayoutElement {}
+extension UIView: UILayoutElement {}
+
+
+extension UIView {
 
     typealias Insets = (top: CGFloat?, left: CGFloat?, bottom: CGFloat?, right: CGFloat?)
 
@@ -82,7 +64,6 @@ extension UIView: UILayoutElement {
 extension UIView {
 
     private class func animationOption(for curve: UIViewAnimationCurve) -> UIViewAnimationOptions {
-
         switch curve {
         case .easeIn: return UIViewAnimationOptions.curveEaseIn
         case .easeInOut: return UIViewAnimationOptions.curveEaseInOut
