@@ -41,6 +41,8 @@ final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
             } else {
                 alert.widthAnchor.equals(UIScreen.main.bounds.width * 0.72)
             }
+            alert.topAnchor.greaterOrEquals(containerView.topAnchor, constant: bezel)
+            alert.bottomAnchor.lessOrEquals(containerView.bottomAnchor, constant: -bezel)
             alert.centerXAnchor.equals(containerView.centerXAnchor)
             alert.centerYAnchor.equals(containerView.centerYAnchor)
         }

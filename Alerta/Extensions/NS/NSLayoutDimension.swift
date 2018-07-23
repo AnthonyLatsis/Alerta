@@ -9,8 +9,16 @@
 import UIKit
 
 internal extension NSLayoutDimension {
-    @discardableResult internal func equals(_ constant: CGFloat) -> NSLayoutConstraint {
+    @discardableResult func equals(_ constant: CGFloat) -> NSLayoutConstraint {
         return self.constraint(equalToConstant: constant).active()
+    }
+
+    @discardableResult func lessOrEquals(_ constant: CGFloat) -> NSLayoutConstraint {
+        return self.constraint(lessThanOrEqualToConstant: constant).active()
+    }
+
+    @discardableResult func greaterOrEquals(_ constant: CGFloat) -> NSLayoutConstraint {
+        return self.constraint(greaterThanOrEqualToConstant: constant).active()
     }
 }
 

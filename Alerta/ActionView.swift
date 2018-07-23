@@ -222,18 +222,14 @@ extension ActionView {
 
             var height = CGFloat(visible) * config.style.actionHeight + CGFloat(visible - 1) * AlertaLayout.separatorHeight
 
-            height += (actions > limit) ? (config.style.actionHeight * 0.2) : 0.0
+            height += (actions > limit) ? (config.style.actionHeight * 0.2) : 0
 
             self.actionsContainer.heightAnchor.equals(height)
         }
-        if config.cancelAction != nil && config.style == .actionSheet {
-            height(actions: config.actionCount - 1)
+        if config.actionCount == 2 && config.style == .alert {
+            height(actions: 1)
         } else {
-            if config.actionCount == 2 && config.style == .alert {
-                height(actions: 1)
-            } else {
-                height(actions: config.actionCount)
-            }
+            height(actions: config.actionCount)
         }
         self.setTargets()
     }
