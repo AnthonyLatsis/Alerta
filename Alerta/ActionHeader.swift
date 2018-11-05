@@ -57,11 +57,11 @@ extension ActionHeader {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        let width = self.bounds.width - indentX * 2
+        let width = bounds.width - indentX * 2
 
-        let titleHeight = self.titleLabel.sizeThatFits(CGSize.init(width: width, height: CGFloat.greatestFiniteMagnitude)).height
+        let titleHeight = titleLabel.sizeThatFits(CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)).height
 
-        let messageHeight = self.messageLabel.sizeThatFits(CGSize.init(width: width, height: CGFloat.greatestFiniteMagnitude)).height
+        let messageHeight = messageLabel.sizeThatFits(CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)).height
 
         titleHeightConstraint?.constant = titleHeight
         messageHeightConstraint?.constant = messageHeight
@@ -89,9 +89,9 @@ extension ActionHeader {
                 titleLabel.font = layout.fonts[config.style]?[.title]
                 titleLabel.numberOfLines = 0
 
-                let attrstr = NSMutableAttributedString.init(string: title)
+                let attrstr = NSMutableAttributedString(string: title)
 
-                let style = NSMutableParagraphStyle.init()
+                let style = NSMutableParagraphStyle()
                 style.lineSpacing = config.style == .alert ? 2 : 2.5
                 style.alignment = .center
 
@@ -111,9 +111,9 @@ extension ActionHeader {
                 messageLabel.numberOfLines = 0
 
                 if config.style == .actionSheet {
-                    let attrstr = NSMutableAttributedString.init(string: message)
+                    let attrstr = NSMutableAttributedString(string: message)
 
-                    let style = NSMutableParagraphStyle.init()
+                    let style = NSMutableParagraphStyle()
                     style.lineSpacing = 2.5
                     style.alignment = .center
 

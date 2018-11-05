@@ -40,7 +40,7 @@ extension UILayoutGuide: UILayoutElement {}
 extension UIView: UILayoutElement {}
 
 
-extension UIView {
+extension UILayoutElement {
 
     typealias Insets = (top: CGFloat?, left: CGFloat?, bottom: CGFloat?, right: CGFloat?)
 
@@ -76,7 +76,7 @@ extension UIView {
 
     UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: completion)
   }
-  
+
   class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> ()) {
 
     UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: nil)

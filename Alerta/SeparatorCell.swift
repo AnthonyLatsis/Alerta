@@ -14,10 +14,10 @@ class SeparatorCell: UICollectionViewCell {
 
         super.init(frame: frame)
 
-        effectView.effect = UIVibrancyEffect.init(blurEffect: UIBlurEffect.init(style: .extraLight))
+        effectView.effect = UIVibrancyEffect(blurEffect: UIBlurEffect(style: .extraLight))
         effectView.contentView.backgroundColor = .white
 
-        self.contentView.insert(subviews: [effectView])
+        contentView.insert(subviews: [effectView])
 
         effectView.anchor(to: self.contentView)
     }

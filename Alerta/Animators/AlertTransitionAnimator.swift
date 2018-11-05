@@ -54,11 +54,11 @@ final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
                 : .clear
         }
         if mode == .present {
-            alert.transform = CGAffineTransform.init(scaleX: 1.5, y: 1.5)
+            alert.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
 
-            let animator = UIViewPropertyAnimator.init(duration: duration, controlPoint1: CGPoint.init(x: 0, y: 0.9), controlPoint2: CGPoint.init(x: 0.1, y: 1.0)) {
+            let animator = UIViewPropertyAnimator(duration: duration, controlPoint1: CGPoint(x: 0, y: 0.9), controlPoint2: CGPoint(x: 0.1, y: 1.0)) {
 
-                alert.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
+                alert.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }
             animator.addCompletion { _ in
                 transitionContext.completeTransition(true)
@@ -66,7 +66,7 @@ final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
             animator.startAnimation()
             return
         }
-        let animator = UIViewPropertyAnimator.init(duration: duration, curve: .easeOut) {
+        let animator = UIViewPropertyAnimator(duration: duration, curve: .easeOut) {
             alert.alpha = 0.0
         }
         animator.addCompletion { _ in

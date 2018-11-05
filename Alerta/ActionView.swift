@@ -59,10 +59,10 @@ final class ActionView: UIView {
 
     init(blurEffect: UIBlurEffect) {
 
-        self.blurView = UIVisualEffectView.init(effect: blurEffect)
-        self.separatorView = UIVisualEffectView.init(
-            effect: UIVibrancyEffect.init(blurEffect: blurEffect))
-        self.cancelBlurView = UIVisualEffectView.init(effect: blurEffect)
+        blurView = UIVisualEffectView(effect: blurEffect)
+        separatorView = UIVisualEffectView(
+            effect: UIVibrancyEffect(blurEffect: blurEffect))
+        cancelBlurView = UIVisualEffectView(effect: blurEffect)
 
         super.init(frame: CGRect.zero)
 
@@ -81,14 +81,14 @@ extension ActionView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        let mask1 = UIView.init(frame: mainDimmingKnockoutView.bounds)
-        let mask2 = UIView.init(frame: cancelDimmingKnockoutView.bounds)
+        let mask1 = UIView(frame: mainDimmingKnockoutView.bounds)
+        let mask2 = UIView(frame: cancelDimmingKnockoutView.bounds)
 
         let layer1 = CAShapeLayer()
         let layer2 = CAShapeLayer()
 
-        layer1.path = UIBezierPath.rect(mask1.bounds, cornerRadius: layout.bodyCornerRadius).cgPath
-        layer2.path = UIBezierPath.rect(mask2.bounds, cornerRadius: layout.cancelActionCornerRadius).cgPath
+        layer1.path = UIBezierPath(roundedRect: mask1.bounds, cornerRadius: layout.bodyCornerRadius).cgPath
+        layer2.path = UIBezierPath(roundedRect: mask2.bounds, cornerRadius: layout.cancelActionCornerRadius).cgPath
 
         layer1.frame = mask1.bounds
         layer2.frame = mask2.bounds
@@ -101,13 +101,13 @@ extension ActionView {
 
         let layer3 = CAShapeLayer()
 
-        layer3.path = UIBezierPath.rect(mainDimmingKnockoutView.bounds, cornerRadius: layout.bodyCornerRadius).cgPath
+        layer3.path = UIBezierPath(roundedRect: mainDimmingKnockoutView.bounds, cornerRadius: layout.bodyCornerRadius).cgPath
 
         mainDimmingKnockoutView.layer.mask = layer3
-       
+
         let layer4 = CAShapeLayer()
 
-        layer4.path = UIBezierPath.rect(cancelDimmingKnockoutView.bounds, cornerRadius: layout.cancelActionCornerRadius).cgPath
+        layer4.path = UIBezierPath(roundedRect: cancelDimmingKnockoutView.bounds, cornerRadius: layout.cancelActionCornerRadius).cgPath
 
         cancelDimmingKnockoutView.layer.mask = layer4
     }
@@ -156,7 +156,7 @@ extension ActionView {
 
     func setTargets() {
         if let cancel = cancelView {
-            let gesture = UITapGestureRecognizer.init(target: self, action: #selector(self.cancel))
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(self.cancel))
             cancel.addGestureRecognizer(gesture)
         }
     }
@@ -220,7 +220,7 @@ extension ActionView {
         }
         func height(actions: Int) {
             let limit = layout.actionCountLimit(config.style)
-            
+
             let visible = (actions > limit) ? limit : actions
 
             var height = CGFloat(visible) * config.style.actionHeight + CGFloat(visible - 1) * AlertaLayout.separatorHeight

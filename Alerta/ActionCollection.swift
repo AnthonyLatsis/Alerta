@@ -11,15 +11,15 @@ import UIKit
 fileprivate extension IndexPath {
 
     func next() -> IndexPath {
-        return IndexPath.init(row: self.row + 1, section: self.section)
+        return IndexPath(row: self.row + 1, section: self.section)
     }
 
     func previous() -> IndexPath {
-        return IndexPath.init(row: self.row - 1, section: self.section)
+        return IndexPath(row: self.row - 1, section: self.section)
     }
 
     func step(over: Int) -> IndexPath {
-        return IndexPath.init(row: self.row + over, section: self.section)
+        return IndexPath(row: self.row + over, section: self.section)
     }
 }
 
@@ -53,7 +53,7 @@ class ActionCollection: UICollectionView {
 
         setup()
     }
-   
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -69,7 +69,7 @@ extension ActionCollection {
         self.allowsMultipleSelection = false
 
         if #available(iOS 10.0, *) {
-            self.generator = UISelectionFeedbackGenerator.init()
+            self.generator = UISelectionFeedbackGenerator()
             (self.generator as! UISelectionFeedbackGenerator).prepare()
         }
     }

@@ -29,21 +29,21 @@ public class AlertaLayout {
 
     public var bodyCornerRadius: CGFloat = 13.0
     public var cancelActionCornerRadius: CGFloat = 13.0
-    
+
     var textColors: [ActionControllerStyle : [AlertaElement : UIColor]] = [
         .alert: [
             .message             : .black,
             .title               : .black,
-            .action(.cancel)     : UIColor.init(red: 0, green: 0.478431, blue: 1),
-            .action(.default)    : UIColor.init(red: 0, green: 0.478431, blue: 1),
-            .action(.destructive): UIColor.init(red: 1, green: 0.231373, blue: 0.188235),
+            .action(.cancel)     : UIColor(red: 0, green: 0.478431, blue: 1),
+            .action(.default)    : UIColor(red: 0, green: 0.478431, blue: 1),
+            .action(.destructive): UIColor(red: 1, green: 0.231373, blue: 0.188235),
         ],
         .actionSheet: [
-            .message             : UIColor.init(white: 0.56, alpha: 1.0),
-            .title               : UIColor.init(white: 0.56, alpha: 1.0),
-            .action(.cancel)     : UIColor.init(red: 0, green: 0.478431, blue: 1),
-            .action(.default)    : UIColor.init(red: 0, green: 0.478431, blue: 1),
-            .action(.destructive): UIColor.init(red: 1, green: 0.231373, blue: 0.188235),
+            .message             : UIColor(white: 0.56, alpha: 1.0),
+            .title               : UIColor(white: 0.56, alpha: 1.0),
+            .action(.cancel)     : UIColor(red: 0, green: 0.478431, blue: 1),
+            .action(.default)    : UIColor(red: 0, green: 0.478431, blue: 1),
+            .action(.destructive): UIColor(red: 1, green: 0.231373, blue: 0.188235),
         ]
     ]
 
@@ -101,7 +101,7 @@ public class AlertaLayout {
             }
         }
     }
-    
+
     func actionCountLimit(_ style: ActionControllerStyle) -> Int {
 
         return (style == .alert) ? 2 : 6
