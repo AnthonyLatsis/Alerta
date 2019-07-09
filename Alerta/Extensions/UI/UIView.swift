@@ -9,7 +9,6 @@
 import UIKit
 
 internal extension UIView {
-
     func insert(subviews: [UIView], at index: Int? = nil) {
 
         for object in subviews {
@@ -62,25 +61,22 @@ extension UILayoutElement {
 }
 
 extension UIView {
-
-    private class func animationOption(for curve: UIViewAnimationCurve) -> UIViewAnimationOptions {
-        switch curve {
-        case .easeIn: return UIViewAnimationOptions.curveEaseIn
-        case .easeInOut: return UIViewAnimationOptions.curveEaseInOut
-        case .linear: return UIViewAnimationOptions.curveLinear
-        case .easeOut: return UIViewAnimationOptions.curveEaseOut
-        }
+    
+    class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIView.AnimationCurve = .linear, animations: @escaping () -> (), completion: @escaping ((Bool) -> ())) {
+        
+        UIView.animate(withDuration: duration, delay: delay,
+                       options: UIView.AnimationOptions(
+                        rawValue: UInt(bitPattern: curve.rawValue << 16)),
+                       animations: animations, completion: completion)
     }
-
-  class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> (), completion: @escaping ((Bool) -> ())) {
-
-    UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: completion)
-  }
-
-  class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIViewAnimationCurve = .linear, animations: @escaping () -> ()) {
-
-    UIView.animate(withDuration: duration, delay: delay, options: animationOption(for: curve), animations: animations, completion: nil)
-  }
+    
+    class func animate(duration: TimeInterval, delay: TimeInterval = 0, curve: UIView.AnimationCurve = .linear, animations: @escaping () -> ()) {
+        
+        UIView.animate(withDuration: duration, delay: delay,
+                       options: UIView.AnimationOptions(
+                        rawValue: UInt(bitPattern: curve.rawValue << 16)),
+                       animations: animations, completion: nil)
+    }
 }
 
 

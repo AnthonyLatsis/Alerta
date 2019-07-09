@@ -10,11 +10,11 @@
 Pod::Spec.new do |spec|
 
 	spec.name         			= "Alerta"
-	spec.version 		 		    = "4.0.6"
+	spec.version 		 		    = "4.1"
 	spec.license      			= { :type => "MIT", :file => "LICENSE" }
 
   spec.platform     			= :ios, "10.0"
-  spec.swift_version      = "4.0"
+  spec.swift_version      = "4.2"
  	spec.framework  			  = "UIKit" 
 	spec.source_files  			= "Alerta/**/*.{swift}"
 
@@ -27,6 +27,4 @@ Pod::Spec.new do |spec|
   spec.summary      			= "An iOS native-style alert controller you can customize to your heart's content."
 
   spec.requires_arc 			= true
-
-  # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 end

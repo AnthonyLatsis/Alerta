@@ -11,16 +11,16 @@ import UIKit
 internal extension CAMediaTimingFunction {
 
     static var linear: CAMediaTimingFunction {
-        return CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        return CAMediaTimingFunction(name: .linear)
     }
     static var easeIn: CAMediaTimingFunction {
-        return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        return CAMediaTimingFunction(name: .easeIn)
     }
     static var easeOut: CAMediaTimingFunction {
-        return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        return CAMediaTimingFunction(name: .easeOut)
     }
     static var easeInEaseOut: CAMediaTimingFunction {
-        return CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        return CAMediaTimingFunction(name: .easeInEaseOut)
     }
 }
 

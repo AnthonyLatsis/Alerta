@@ -141,7 +141,7 @@ public extension ActionController {
 
 public extension ActionController {
 
-    public func add(action: Action) {
+    func add(action: Action) {
 
         if action.style == .cancel {
             if let _ = cancelAction {
@@ -173,7 +173,7 @@ public extension ActionController {
         }
     }
 
-    public func add(actions: Action...) {
+    func add(actions: Action...) {
         for action in actions { self.add(action: action) }
     }
 
