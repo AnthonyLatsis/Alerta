@@ -6,19 +6,19 @@
 //  Copyright © 2017 Anthony Latsis. All rights reserved.
 //
 
-import UIKit
+import UIKit.UIViewControllerTransitioning
 
-final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning, ActionTransitionAnimator {
+final class AlertTransitionAnimator: NSObject, ActionTransitionAnimator {
 
-    fileprivate let dimmingView = UIView()
+    private let dimmingView = UIView()
 
-    fileprivate let dimDuration = 0.3
+    private let dimDuration = 0.3
 
-    var mode: AnimationControllerMode = .present
+    internal var mode: TransitionKind = .present
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
 
-        return (mode == .present) ? 0.3 : 0.2
+        return mode == .present ? 0.3 : 0.2
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -32,7 +32,7 @@ final class AlertTransitionAnimator: NSObject, UIViewControllerAnimatedTransitio
         if mode == .present {
             dimmingView.backgroundColor = .clear
 
-            containerView.insert(subviews: [dimmingView, alert])
+            containerView.insert(subviews: dimmingView, alert)
 
             dimmingView.anchor(to: containerView)
 

@@ -6,7 +6,7 @@
 //  Copyright © 2017 Anthony Latsis. All rights reserved.
 //
 
-import UIKit
+import UIKit.UIViewController
 
 public enum ActionControllerStyle {
 
@@ -57,24 +57,21 @@ public final class AlertaAction: Action {
 
 public final class ActionController: UIViewController {
 
-    fileprivate let mainView: ActionView
+    private let mainView: AlertaView
 
-    fileprivate let transition: UIViewControllerAnimatedTransitioning & ActionTransitionAnimator
-
-
-    fileprivate let collection = ActionCollection()
+    private let transition: ActionTransitionAnimator
 
 
-    fileprivate(set) var actions: [Action] = []
+    private(set) var actions: [Action] = []
 
-    fileprivate var cancelAction: Action?
+    private var cancelAction: Action?
 
 
     public let blurEffect = UIBlurEffect(style: .extraLight)
 
     public let style: ActionControllerStyle
 
-    let layout: AlertaLayout
+    let layout: AlertaLayoutContext
 
     public let titleText: String?
 
@@ -83,7 +80,7 @@ public final class ActionController: UIViewController {
     var header: UIView?
 
 
-    public init(title: String?, message: String?, style: ActionControllerStyle, layout: AlertaLayout = AlertaLayout()) {
+    public init(title: String?, message: String?, style: ActionControllerStyle, layout: AlertaLayoutContext = AlertaLayoutContext()) {
 
         self.titleText = title
         self.message = message
@@ -93,7 +90,7 @@ public final class ActionController: UIViewController {
         transition = (style == .alert) ? AlertTransitionAnimator() :
                                          ActionSheetTransitionAnimator()
 
-        mainView = ActionView(blurEffect: blurEffect)
+        mainView = AlertaView(blurEffect: blurEffect)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -115,12 +112,7 @@ public extension ActionController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collection.delegate = self
-        collection.dataSource = self
-
         mainView.delegate = self
-
-        mainView.insert(table: collection)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -128,14 +120,14 @@ public extension ActionController {
 
         let headerConfig = ActionHeaderConfiguration(style: style, title: titleText, message: message, header: header)
 
-        let config = ActionViewConfiguration(style: style, actionCount: actions.count, cancelAction: cancelAction, headerConfig: headerConfig)
+        let config = ActionViewConfiguration(style: style, actionCount: actions.count, actions: actions, cancelAction: cancelAction, headerConfig: headerConfig)
 
         mainView.setup(for: config, layout: layout)
 
-        if actions.count < layout.actionCountLimit(style) {
-            collection.isScrollEnabled = false
-        }
-        collection.scrollIndicatorInsets.bottom = layout.bodyCornerRadius
+//        if actions.count < layout.actionCountLimit(style) {
+//            collection.isScrollEnabled = false
+//        }
+//        collection.scrollIndicatorInsets.bottom = layout.bodyCornerRadius
     }
 }
 
@@ -182,102 +174,36 @@ public extension ActionController {
     }
 }
 
-extension ActionController: UICollectionViewDataSource {
-
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-        return actions.count * 2 - 1
+extension ActionController: AlertaViewActionHandler {
+    
+    func didSelectAction(at index: Int) {
+        dismiss(animated: true,
+                completion: (actions[index] as? AlertaAction)?.handler)
     }
-
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        if indexPath.row % 2 == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ActionCollection.ReuseID.cell.rawValue, for: indexPath) as! ActionCollectionViewCell
-
-            let index = indexPath.row / 2
-
-            switch actions[index].style {
-            case .cancel:
-                cell.textLabel.textColor = layout.textColors[style]?[.action(.cancel)]
-                cell.textLabel.font = layout.fonts[style]?[.action(.cancel)]
-            case .default:
-                cell.textLabel.textColor = layout.textColors[style]?[.action(.default)]
-                cell.textLabel.font = layout.fonts[style]?[.action(.default)]
-            case .destructive:
-                cell.textLabel.textColor = layout.textColors[style]?[.action(.destructive)]
-                cell.textLabel.font = layout.fonts[style]?[.action(.destructive)]
-            }
-            cell.textLabel.text = actions[index].title
-
-            return cell
-        } else {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: ActionCollection.ReuseID.separator.rawValue, for: indexPath)
-        }
-    }
-}
-
-extension ActionController: UICollectionViewDelegate {
-
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row % 2 == 0 {
-            dismiss(animated: true,
-                    completion: (actions[indexPath.row / 2] as? AlertaAction)?.handler)
-        }
-    }
-}
-
-extension ActionController: UICollectionViewDelegateFlowLayout {
-
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let height = self.style.actionHeight
-
-        switch style {
-        case .alert:
-            if indexPath.row % 2 == 0 {
-
-                if actions.count == 2 {
-                    return CGSize(width: collectionView.bounds.width / 2 - AlertaLayout.separatorHeight / 2, height: height)
-                }
-                return CGSize(width: collectionView.bounds.width, height: height)
-
-            } else {
-                if actions.count == 2 {
-                    return CGSize(width: AlertaLayout.separatorHeight, height: collectionView.bounds.height)
-                }
-                return CGSize(width: collectionView.bounds.width, height: AlertaLayout.separatorHeight)
-            }
-        case .actionSheet:
-            if indexPath.row % 2 == 0 {
-                return CGSize(width: collectionView.bounds.width, height: height)
-            }
-            return CGSize(width: collectionView.bounds.width, height: AlertaLayout.separatorHeight)
-        }
-    }
-}
-
-extension ActionController: ActionViewDelegate {
+    
     func cancel() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true)
     }
 }
 
 extension ActionController {
 
-    @objc fileprivate func tappedOutside() {
-        if style == .actionSheet { self.dismiss(animated: true) }
+    @objc private func tappedOutside() {
+        if style == .actionSheet {
+            self.dismiss(animated: true)
+        }
     }
 }
 
 extension ActionController: UIViewControllerTransitioningDelegate {
 
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.mode = .present
-        return transition
+        
+        return transition.forMode(.present)
     }
 
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.mode = .dismiss
-        return transition
+        
+        return transition.forMode(.dismiss)
     }
 }
