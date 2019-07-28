@@ -9,7 +9,7 @@
 import UIKit.UIView
 
 public enum DynamicCornerRadiusKind {
-    
+
     case none
     case predefined(CGFloat)
     case widthFraction(CGFloat)
@@ -18,12 +18,12 @@ public enum DynamicCornerRadiusKind {
 }
 
 internal protocol DynamicCornerRadiusProtocol: UIView {
-    
+
     var cornerRadiusKind: DynamicCornerRadiusKind { get set }
 }
 
 extension DynamicCornerRadiusProtocol {
-    
+
     var computedRadius: CGFloat {
         switch cornerRadiusKind {
         case .none:
@@ -43,7 +43,7 @@ extension DynamicCornerRadiusProtocol {
 internal final class SimpleRoundedView: UIView, DynamicCornerRadiusProtocol {
 
     var cornerRadiusKind: DynamicCornerRadiusKind = .none
-    
+
     override var isOpaque: Bool {
         get {
             return false
@@ -52,19 +52,19 @@ internal final class SimpleRoundedView: UIView, DynamicCornerRadiusProtocol {
             super.isOpaque = false
         }
     }
-    
+
     override var bounds: CGRect {
         didSet {
             setNeedsDisplay()
         }
     }
-    
+
     override var frame: CGRect {
         didSet {
             setNeedsDisplay()
         }
     }
-    
+
     private var _backgroundColor: UIColor?
     override var backgroundColor: UIColor? {
         get {
@@ -75,12 +75,11 @@ internal final class SimpleRoundedView: UIView, DynamicCornerRadiusProtocol {
             setNeedsDisplay()
         }
     }
-    
+
     override func draw(_ rect: CGRect) {
         guard let color = _backgroundColor else {
             return
         }
-        print(bounds, computedRadius)
         let bezier = UIBezierPath(roundedRect: bounds,
                                   cornerRadius: computedRadius)
         color.setFill()

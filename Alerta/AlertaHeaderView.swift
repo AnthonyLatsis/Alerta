@@ -30,7 +30,7 @@ internal final class AlertaHeaderView: UIView {
     private let horizontalInset: CGFloat = 16
 
     private let stackView = UIStackView()
-    
+
     private var titleLabel: UILabel?
     private var messageLabel: UILabel?
 
@@ -52,9 +52,9 @@ internal final class AlertaHeaderView: UIView {
         stackView.layoutMargins.top = verticalInset
         stackView.layoutMargins.bottom = verticalInset
         stackView.spacing = textSpacing
-        
+
         insert(subview: stackView)
-        
+
         stackView.anchorToSuperview()
     }
 
@@ -80,7 +80,7 @@ extension AlertaHeaderView {
         }
         if let title = config.title {
             let titleLabel = UILabel()
-            
+
             titleLabel.textColor = layout.textColors[config.style]?[.title]
             titleLabel.font = layout.fonts[config.style]?[.title]
             titleLabel.numberOfLines = 0
@@ -102,7 +102,7 @@ extension AlertaHeaderView {
         }
         if let message = config.message {
             let messageLabel = UILabel()
-            
+
             messageLabel.textColor = layout.textColors[config.style]?[.message]
             messageLabel.font = layout.fonts[config.style]?[.message]
             messageLabel.numberOfLines = 0
@@ -120,7 +120,7 @@ extension AlertaHeaderView {
             messageLabel.attributedText = attrStr
 
             stackView.addArrangedSubview(messageLabel)
-            
+
             self.messageLabel = messageLabel
         }
     }

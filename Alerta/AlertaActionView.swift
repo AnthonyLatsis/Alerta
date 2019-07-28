@@ -9,18 +9,18 @@
 import UIKit.UIView
 
 internal final class AlertaActionView: UIView {
-    
+
     enum State {
         case normal, highlighted
     }
-    
+
     private let colorBurnFilterLayer = CALayer()
     private let plusDFilterLayer = CALayer()
 
     private let highlightView = UIView()
 
     internal let textLabel = UILabel()
-    
+
     var state: State = .normal {
         didSet {
             highlightView.isHidden = state == .normal
@@ -38,25 +38,25 @@ internal final class AlertaActionView: UIView {
         super.init(frame: frame)
 
         isUserInteractionEnabled = false
-        
+
         textLabel.textAlignment = .center
-        
+
         colorBurnFilterLayer.backgroundColor =
             UIColor(white: 0.6, alpha: 1).cgColor
         colorBurnFilterLayer.compositingFilter = "colorBurnBlendMode"
-        
+
         plusDFilterLayer.backgroundColor =
             UIColor.black.withAlphaComponent(0.04).cgColor
         plusDFilterLayer.compositingFilter = "plusD"
-        
+
         highlightView.isHidden = true
         highlightView.layer.isOpaque = true
         highlightView.layer.setValue(false, forKey: "allowsGroupBlending")
         highlightView.layer.addSublayer(colorBurnFilterLayer)
         highlightView.layer.addSublayer(plusDFilterLayer)
-        
+
         insert(subviews: highlightView, textLabel)
-        
+
         highlightView.anchorToSuperview()
         textLabel.anchorToSuperview()
     }

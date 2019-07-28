@@ -14,7 +14,7 @@ struct ActionViewConfiguration {
     let style: ActionControllerStyle
 
     let actionCount: Int
-    
+
     let actions: [Action]
 
     let cancelAction: Action?
@@ -22,17 +22,17 @@ struct ActionViewConfiguration {
     let headerConfig: ActionHeaderConfiguration
 }
 
-protocol AlertaViewActionHandler: class {
+internal protocol AlertaViewActionHandler: class {
 
     func didSelectAction(at index: Int)
-    
+
     func cancel()
 }
 
 internal final class AlertaView: UIView {
 
     weak var delegate: AlertaViewActionHandler?
-    
+
     private let selectionFeedback = UISelectionFeedbackGenerator()
 
     private let mainDimmingKnockoutView = UIView()
@@ -43,20 +43,18 @@ internal final class AlertaView: UIView {
     private let actionStackView = UIStackView()
 
     private let cancelDimmingKnockoutView = UIView()
-    private let cancelBlurView: UIVisualEffectView
-    
+    private var cancelBlurView: UIVisualEffectView?
+
     private var blurEffect: UIBlurEffect
-    
+
     private var highlightedAction: AlertaActionView?
     private var highlightedActionIndex: Int?
 
     private var layout: AlertaLayoutContext!
 
     init(blurEffect: UIBlurEffect) {
-
         self.blurEffect = blurEffect
         bodyBlurView = UIVisualEffectView(effect: blurEffect)
-        cancelBlurView = UIVisualEffectView(effect: blurEffect)
 
         super.init(frame: .zero)
 
@@ -70,7 +68,7 @@ internal final class AlertaView: UIView {
 
 // MARK: - Masking
 
-extension AlertaView {
+internal extension AlertaView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -85,25 +83,27 @@ extension AlertaView {
             
             bodyBlurView.mask = mask
         }
-        if let mask = cancelBlurView.mask {
-            mask.frame = cancelDimmingKnockoutView.bounds
-        } else {
-            let mask = SimpleRoundedView(
-                frame: cancelDimmingKnockoutView.bounds)
-            mask.backgroundColor = .white
-            mask.cornerRadiusKind =
-                .predefined(layout.cancelActionCornerRadius)
+        if let cancelBlurView = self.cancelBlurView {
+            if let mask = cancelBlurView.mask {
+                mask.frame = cancelDimmingKnockoutView.bounds
+            } else {
+                let mask = SimpleRoundedView(
+                    frame: cancelDimmingKnockoutView.bounds)
+                mask.backgroundColor = .white
+                mask.cornerRadiusKind =
+                    .predefined(layout.cancelActionCornerRadius)
 
-            cancelBlurView.mask = mask
+                cancelBlurView.mask = mask
+            }
         }
         let bezier1 = UIBezierPath(
             roundedRect: mainDimmingKnockoutView.bounds,
             cornerRadius: layout.bodyCornerRadius).cgPath
-        
+
         let bezier2 = UIBezierPath(
             roundedRect: cancelDimmingKnockoutView.bounds,
             cornerRadius: layout.cancelActionCornerRadius).cgPath
-        
+
         if let mask = mainDimmingKnockoutView.layer.mask
             as? CAShapeLayer {
 
@@ -129,7 +129,7 @@ extension AlertaView {
 
 // MARK: - UI Setup
 
-extension AlertaView {
+internal extension AlertaView {
 
     private func setupUI() {
         self.backgroundColor = .clear
@@ -140,7 +140,7 @@ extension AlertaView {
         mainDimmingKnockoutView.clipsToBounds = true
 
         bodyBlurView.layer.masksToBounds = true
-        
+
         bodyStackView.axis = .vertical
         bodyStackView.alignment = .fill
         bodyStackView.distribution = .fill
@@ -148,8 +148,6 @@ extension AlertaView {
         actionStackView.axis = .vertical
         actionStackView.alignment = .fill
         actionStackView.distribution = .fill
-
-        cancelBlurView.layer.masksToBounds = true
 
         insert(subviews: mainDimmingKnockoutView, bodyBlurView)
 
@@ -174,16 +172,22 @@ extension AlertaView {
 
         self.layout = layout
 
-        if let cancel = config.cancelAction, config.style == .actionSheet {
+        // MARK: Cancel Action
 
+        if let cancel = config.cancelAction, config.style == .actionSheet {
+            
+            let cancelBlurView = UIVisualEffectView(effect: blurEffect)
+            cancelBlurView.layer.masksToBounds = true
+            
             cancelDimmingKnockoutView.layer.compositingFilter = "overlayBlendMode"
             cancelDimmingKnockoutView.backgroundColor = .white
             cancelDimmingKnockoutView.clipsToBounds = true
 
             insert(subviews: cancelDimmingKnockoutView,
-                        cancelBlurView)
+                   cancelBlurView)
 
             let actionView = AlertaActionView()
+            actionView.isUserInteractionEnabled = true
             actionView.textLabel.textColor = layout.textColors[config.style]?[.action(.cancel)]
             actionView.textLabel.font = layout.fonts[config.style]?[.action(.cancel)]
             actionView.textLabel.text = cancel.title
@@ -200,12 +204,17 @@ extension AlertaView {
 
             cancelBlurView.anchor(to: cancelDimmingKnockoutView)
             actionView.anchorToSuperview()
+            
+            self.cancelBlurView = cancelBlurView
 
             actionView.addGestureRecognizer(UITapGestureRecognizer(
                 target: self, action: #selector(self.cancel)))
         } else {
             mainDimmingKnockoutView.bottomAnchor.equals(bottomAnchor)
         }
+
+        // MARK: Header
+
         if config.headerConfig.hasHeader {
             let separator = UIVisualEffectView(
                 effect: UIVibrancyEffect(blurEffect: blurEffect))
@@ -228,6 +237,9 @@ extension AlertaView {
             }
             bodyStackView.insertArrangedSubview(header, at: 0)
         }
+
+        // MARK: All Actions
+
         for (i, action) in config.actions.enumerated() {
             let actionView = AlertaActionView()
             actionView.textLabel.text = action.title
@@ -291,15 +303,15 @@ extension AlertaView {
 extension AlertaView {
     override func touchesBegan(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
-        
+
         guard touches.count == 1 else {
             return
         }
         let location = touches[touches.startIndex]
             .location(in: actionStackView)
-        
+
         selectionFeedback.prepare()
-        
+
         if actionStackView.bounds.contains(location) == false {
             return
         }
@@ -319,7 +331,7 @@ extension AlertaView {
             }
         }
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
 
@@ -328,7 +340,7 @@ extension AlertaView {
         }
         let location = touches[touches.startIndex]
             .location(in: actionStackView)
-        
+
         if let i = highlightedActionIndex,
             actionStackView.bounds.contains(location) == false {
             
@@ -383,9 +395,9 @@ extension AlertaView {
             }
         }
     }
-        
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+
         guard let i = highlightedActionIndex else {
             return
         }
@@ -398,7 +410,7 @@ extension AlertaView {
         }
         highlightedAction = nil
         highlightedActionIndex = nil
-        
+
         delegate?.didSelectAction(at: actionStackView.subviews[i].tag)
     }
 }

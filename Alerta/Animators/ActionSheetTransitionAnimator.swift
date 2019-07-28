@@ -21,7 +21,7 @@ protocol ActionTransitionAnimator: UIViewControllerAnimatedTransitioning {
 }
 
 extension ActionTransitionAnimator {
-    
+
     func forMode(_ mode: TransitionKind) -> Self {
         self.mode = mode
         return self
@@ -98,7 +98,7 @@ internal final class ActionSheetTransitionAnimator: NSObject, ActionTransitionAn
         let layoutFrame = actionSheetFrameGuide.layoutFrame
 
         let startY = containerView.bounds.height + layoutFrame.height / 2
-        
+
         let animator = UIViewPropertyAnimator(duration: duration,
                                               timingParameters: spring)
         if mode == .present {

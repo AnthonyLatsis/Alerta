@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5908610122EA8B080096A24C /* SimpleRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908610022EA8B080096A24C /* SimpleRoundedView.swift */; };
-		5908610322EA94530096A24C /* AlertaLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908610222EA94530096A24C /* AlertaLayout.swift */; };
+		5908610322EA94530096A24C /* AlertaLayoutContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5908610222EA94530096A24C /* AlertaLayoutContext.swift */; };
 		5925B4FA20824EEF008A4904 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5925B4F920824EEF008A4904 /* UIColor.swift */; };
 		59278BF120801E74006212BC /* Alerta.h in Headers */ = {isa = PBXBuildFile; fileRef = 59278BEF20801E74006212BC /* Alerta.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59278C0020801F0D006212BC /* ActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59278BF720801F0C006212BC /* ActionController.swift */; };
@@ -25,7 +25,7 @@
 
 /* Begin PBXFileReference section */
 		5908610022EA8B080096A24C /* SimpleRoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleRoundedView.swift; sourceTree = "<group>"; };
-		5908610222EA94530096A24C /* AlertaLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertaLayout.swift; sourceTree = "<group>"; };
+		5908610222EA94530096A24C /* AlertaLayoutContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertaLayoutContext.swift; sourceTree = "<group>"; };
 		5925B4F920824EEF008A4904 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		59278BEC20801E74006212BC /* Alerta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alerta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59278BEF20801E74006212BC /* Alerta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alerta.h; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 				59278BFA20801F0C006212BC /* AlertaView.swift */,
 				59278BF920801F0C006212BC /* AlertaHeaderView.swift */,
 				59278BFC20801F0C006212BC /* AlertaActionView.swift */,
-				5908610222EA94530096A24C /* AlertaLayout.swift */,
+				5908610222EA94530096A24C /* AlertaLayoutContext.swift */,
 				5908610022EA8B080096A24C /* SimpleRoundedView.swift */,
 				59F165E720FE9CA400CED8A9 /* Animators */,
 				5951558120805AF00054892E /* Extensions */,
@@ -220,7 +220,7 @@
 				59278C0620801F0D006212BC /* ActionSheetTransitionAnimator.swift in Sources */,
 				59278C0220801F0D006212BC /* AlertaHeaderView.swift in Sources */,
 				5951558D20805ED00054892E /* NSLayoutDimension.swift in Sources */,
-				5908610322EA94530096A24C /* AlertaLayout.swift in Sources */,
+				5908610322EA94530096A24C /* AlertaLayoutContext.swift in Sources */,
 				59278C0820801F0D006212BC /* AlertTransitionAnimator.swift in Sources */,
 				59278C0520801F0D006212BC /* AlertaActionView.swift in Sources */,
 			);

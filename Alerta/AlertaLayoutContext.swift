@@ -26,7 +26,7 @@ public final class AlertaLayoutContext {
     static let separatorHeight: CGFloat = 0.5
 
     var actionHeight: CGFloat?
-    
+
     public var cancelActionSpacing: CGFloat = 8.0
 
     public var bodyCornerRadius: CGFloat = 13.0

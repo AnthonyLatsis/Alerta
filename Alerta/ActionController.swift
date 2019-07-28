@@ -175,12 +175,12 @@ public extension ActionController {
 }
 
 extension ActionController: AlertaViewActionHandler {
-    
+
     func didSelectAction(at index: Int) {
         dismiss(animated: true,
                 completion: (actions[index] as? AlertaAction)?.handler)
     }
-    
+
     func cancel() {
         self.dismiss(animated: true)
     }
@@ -198,12 +198,12 @@ extension ActionController {
 extension ActionController: UIViewControllerTransitioningDelegate {
 
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
+
         return transition.forMode(.present)
     }
 
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
+
         return transition.forMode(.dismiss)
     }
 }
