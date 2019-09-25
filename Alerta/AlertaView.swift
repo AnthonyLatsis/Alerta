@@ -155,8 +155,9 @@ internal extension AlertaView {
 
         bodyStackView.addArrangedSubview(actionStackView)
 
-
-        mainDimmingKnockoutView.anchor(to: self, insets: (0, 0, nil, 0))
+        mainDimmingKnockoutView.topAnchor.equals(topAnchor)
+        mainDimmingKnockoutView.leadingAnchor.equals(leadingAnchor)
+        mainDimmingKnockoutView.trailingAnchor.equals(trailingAnchor)
 
         bodyBlurView.anchor(to: mainDimmingKnockoutView)
 
@@ -191,11 +192,18 @@ extension AlertaView {
             actionView.textLabel.textColor = layout.textColors[config.style]?[.action(.cancel)]
             actionView.textLabel.font = layout.fonts[config.style]?[.action(.cancel)]
             actionView.textLabel.text = cancel.title
-            actionView.backgroundColor = .white
+
+            if #available(iOS 13, *) {
+                actionView.backgroundColor = .secondarySystemGroupedBackground
+            } else {
+                actionView.backgroundColor = .white
+            }
 
             cancelBlurView.contentView.insert(subview: actionView)
 
-            cancelDimmingKnockoutView.anchor(to: self, insets: (nil, 0, 0, 0))
+            cancelDimmingKnockoutView.leadingAnchor.equals(leadingAnchor)
+            cancelDimmingKnockoutView.trailingAnchor.equals(trailingAnchor)
+            cancelDimmingKnockoutView.bottomAnchor.equals(bottomAnchor)
             cancelDimmingKnockoutView.topAnchor.equals(
                 mainDimmingKnockoutView.bottomAnchor,
                 constant: layout.cancelActionSpacing)
@@ -221,7 +229,7 @@ extension AlertaView {
             separator.contentView.backgroundColor = .white
             separator.isUserInteractionEnabled = false
 
-            bodyStackView.insertArrangedSubview(separator, at: 0)
+            bodyStackView.insertArrangedSubview(separator, at: .zero)
 
             separator.heightAnchor.equals(
                 AlertaLayoutContext.separatorHeight)
@@ -235,7 +243,7 @@ extension AlertaView {
                                      layout: layout)
                 header = standardHeader
             }
-            bodyStackView.insertArrangedSubview(header, at: 0)
+            bodyStackView.insertArrangedSubview(header, at: .zero)
         }
 
         // MARK: All Actions

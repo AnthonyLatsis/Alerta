@@ -34,20 +34,30 @@ public final class AlertaLayoutContext {
 
     var textColors: [ActionControllerStyle : [AlertaElement : UIColor]] = [
         .alert: [
-            .message             : .black,
-            .title               : .black,
-            .action(.cancel)     : UIColor(red: 0, green: 0.478431, blue: 1),
-            .action(.default)    : UIColor(red: 0, green: 0.478431, blue: 1),
-            .action(.destructive): UIColor(red: 1, green: 0.231373,
-                                           blue: 0.188235),
+            .message: {
+                if #available(iOS 13.0, *) {
+                    return .label
+                } else {
+                    return .black
+                }
+            }(),
+            .title: {
+                if #available(iOS 13.0, *) {
+                    return .label
+                } else {
+                    return .black
+                }
+            }(),
+            .action(.cancel): .systemBlue,
+            .action(.default): .systemBlue,
+            .action(.destructive): .systemRed,
         ],
         .actionSheet: [
-            .message             : UIColor(white: 0.56, alpha: 1.0),
-            .title               : UIColor(white: 0.56, alpha: 1.0),
-            .action(.cancel)     : UIColor(red: 0, green: 0.478431, blue: 1),
-            .action(.default)    : UIColor(red: 0, green: 0.478431, blue: 1),
-            .action(.destructive): UIColor(red: 1, green: 0.231373,
-                                           blue: 0.188235),
+            .message: UIColor(white: 0.56, alpha: 1),
+            .title: UIColor(white: 0.56, alpha: 1),
+            .action(.cancel): .systemBlue,
+            .action(.default): .systemBlue,
+            .action(.destructive): .systemRed,
         ]
     ]
 

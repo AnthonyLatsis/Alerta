@@ -17,8 +17,8 @@ public enum ActionControllerStyle {
     internal var actionHeight: CGFloat {
 
         switch self {
-        case .alert: return 45
-        case .actionSheet: return 56
+        case .alert: return 44
+        case .actionSheet: return 57
         }
     }
 }
@@ -41,7 +41,7 @@ public protocol Action {
 
 public final class AlertaAction: Action {
 
-    public init(title: String, style: ActionStyle, handler: (() -> ())? = nil) {
+    public init(title: String, style: ActionStyle, handler: (() -> Void)? = nil) {
 
         self.title = title
         self.style = style
@@ -52,7 +52,7 @@ public final class AlertaAction: Action {
 
     public let style: ActionStyle
 
-    fileprivate let handler: (() -> ())?
+    fileprivate let handler: (() -> Void)?
 }
 
 public final class ActionController: UIViewController {
@@ -67,7 +67,15 @@ public final class ActionController: UIViewController {
     private var cancelAction: Action?
 
 
-    public let blurEffect = UIBlurEffect(style: .extraLight)
+    public let blurEffect = UIBlurEffect(
+        style: {
+            if #available(iOS 13.0, *) {
+                return .systemMaterial
+            } else {
+                return .extraLight
+            }
+        }()
+    )
 
     public let style: ActionControllerStyle
 
@@ -79,6 +87,9 @@ public final class ActionController: UIViewController {
 
     var header: UIView?
 
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .all
+    }
 
     public init(title: String?, message: String?, style: ActionControllerStyle, layout: AlertaLayoutContext = AlertaLayoutContext()) {
 

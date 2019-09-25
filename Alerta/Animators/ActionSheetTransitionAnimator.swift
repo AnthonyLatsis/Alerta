@@ -8,7 +8,7 @@
 
 import UIKit.UIViewControllerTransitioning
 
-let bezel: CGFloat = 10.0
+let bezel: CGFloat = 8.0
 
 internal enum TransitionKind {
     case present
@@ -71,7 +71,7 @@ internal final class ActionSheetTransitionAnimator: NSObject, ActionTransitionAn
             alert.centerXAnchor.equals(containerView.centerXAnchor)
 
             if let window = containerView.window, #available(iOS 11.0, *),
-                window.safeAreaInsets.bottom > 0 {
+            window.safeAreaInsets.bottom > .zero {
             alert.bottomAnchor.equals(
                 containerView.safeAreaLayoutGuide.bottomAnchor)
             alert.topAnchor.greaterOrEquals(
@@ -87,8 +87,8 @@ internal final class ActionSheetTransitionAnimator: NSObject, ActionTransitionAn
         let duration = transitionDuration(using: transitionContext)
 
         let spring = UISpringTimingParameters(
-            mass: 1, stiffness: 522.3503149568596,
-            damping: 45.70996893268949, initialVelocity: .zero)
+            mass: 1, stiffness: 522.350315,
+            damping: 45.709969, initialVelocity: .zero)
 
         UIView.animate(withDuration: duration) {
             self.dimmingView.backgroundColor = self.mode == .present
